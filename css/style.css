@@ -1,5 +1,5 @@
 :root {
-  --containerBackground: hsl(0, 0%, 0%);
+  --containerBackground: hsl(100, 100%, 100%);
   --clockBackground: #ffffff;
 }
 
@@ -50,6 +50,9 @@ body {
   top: 50%;
   transform-origin: 100%;
   transform: rotate(90deg);
+}
+
+.transition {
   transition: all 0.05s;
   transition-timing-function: cubic-bezier(0.1, 2.7, 0.58, 1);
 }
