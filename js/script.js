@@ -8,6 +8,7 @@ const date = document.querySelector(".date")
 const searchForm = document.querySelector(".search-form");
 const searchInput = document.querySelector(".search");
 const submitButton = document.querySelector(".make-clock")
+const suggestions = document.querySelector(".suggestions")
 
 fetch(endpoint)
   .then(blob => blob.json())
@@ -17,10 +18,23 @@ fetch(endpoint)
 function findMatches(wordToMatch, timezones) {
   return timezones.filter(place => {
     const regex = new RegExp(wordToMatch, 'gi');
-    return place.utc.match(regex) //|| place.state.match(regex)
-
+    return place.text.match(regex) //|| place.state.match(regex)
 
   })
+}
+
+function displayMatches() {
+  const matchArray = findMatches(this.value, timezones);
+  const html = matchArray.map(place => {
+    const regex = new RegExp(this.value, 'gi');
+    const cityName = place.text.replace(regex, `<span class="hl">${this.value}</span>`)
+    return `
+        <li> 
+        <span class="name">${cityName}</span>
+        </li>
+        `;
+  }).join("")
+  suggestions.innerHTML = html;
 }
 
 function pauseTransition(currentValue) {
@@ -79,6 +93,7 @@ function setTime() {
 function makeClock() {
   event.preventDefault()
   const userInput = searchInput.value;
+  findMatches(userInput, timezones);
   console.log(userInput);
 }
 
@@ -91,6 +106,6 @@ function makeClock() {
 
 setInterval(setTime, 1000);
 
-//searchForm.addEventListener("change", displayMatches);
-//searchForm.addEventListener("keyup", displayMatches);
+searchForm.addEventListener("change", displayMatches);
+searchForm.addEventListener("keyup", displayMatches);
 searchForm.addEventListener("submit", makeClock);
