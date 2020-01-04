@@ -15,6 +15,8 @@ fetch(endpoint)
   .then(data => timezones.push(...data))
   .catch(err => console.log(err));
 
+
+
 function findMatches(wordToMatch, timezones) {
   return timezones.filter(place => {
     const regex = new RegExp(wordToMatch, 'gi');
@@ -28,14 +30,12 @@ function displayMatches() {
   const html = matchArray.map(place => {
     const regex = new RegExp(this.value, 'gi');
     const cityName = place.text.replace(regex, `<span class="hl">${this.value}</span>`)
-    return `
-        <li> 
-        <span class="name">${cityName}</span>
-        </li>
-        `;
+    return `<li><span class="name">${cityName}</span></li>`;
   }).join("")
   suggestions.innerHTML = html;
 }
+
+
 
 function pauseTransition(currentValue) {
   if (currentValue === 0) {
@@ -93,8 +93,7 @@ function setTime() {
 function makeClock() {
   event.preventDefault()
   const userInput = searchInput.value;
-  findMatches(userInput, timezones);
-  console.log(userInput);
+
 }
 
 // function setBackground(h, s, l) {
@@ -106,6 +105,6 @@ function makeClock() {
 
 setInterval(setTime, 1000);
 
-searchForm.addEventListener("change", displayMatches);
-searchForm.addEventListener("keyup", displayMatches);
+searchInput.addEventListener("change", displayMatches);
+searchInput.addEventListener("keyup", displayMatches);
 searchForm.addEventListener("submit", makeClock);
