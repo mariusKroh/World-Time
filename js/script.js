@@ -1,27 +1,25 @@
-const endpoint = "https://raw.githubusercontent.com/mariusKroh/timezones.json/master/timezones.json";
+const endpoint = "https://raw.githubusercontent.com/mariusKroh/worldTime/master/timezones.json";
 const timezones = [];
 const secondHand = document.querySelector(".second-hand");
 const minHand = document.querySelector(".min-hand");
 const hourHand = document.querySelector(".hour-hand");
 const container = document.querySelector(".clock-container")
-const date = document.querySelector(".date")
 const searchForm = document.querySelector(".search-form");
 const searchInput = document.querySelector(".search");
 const submitButton = document.querySelector(".make-clock")
 const suggestions = document.querySelector(".suggestions")
 
+// get timezones.json
 fetch(endpoint)
   .then(blob => blob.json())
   .then(data => timezones.push(...data))
   .catch(err => console.log(err));
 
-
-
+// find&display search query
 function findMatches(wordToMatch, timezones) {
   return timezones.filter(place => {
     const regex = new RegExp(wordToMatch, 'gi');
-    return place.text.match(regex) //|| place.state.match(regex)
-
+    return place.city.match(regex) || place.country.match(regex)
   })
 }
 
@@ -29,11 +27,33 @@ function displayMatches() {
   const matchArray = findMatches(this.value, timezones);
   const html = matchArray.map(place => {
     const regex = new RegExp(this.value, 'gi');
-    const cityName = place.text.replace(regex, `<span class="hl">${this.value}</span>`)
-    return `<li><span class="name">${cityName}</span></li>`;
+    const cityName = place.city.replace(regex, `${this.value}`)
+    const countryName = place.country.replace(regex, `${this.value}`)
+    return `<li class="suggestion">${cityName}, ${countryName} UTCOffset: ${place.offset}</li>`;
   }).join("")
   suggestions.innerHTML = html;
 }
+
+// toggle highlight class on mouseover - can probably be simplified
+function addHighlight(e) {
+  const target = e.target;
+  if (target.tagName != "LI") return;
+  target.classList.add("highlight");
+}
+
+function removeHighlight(e) {
+  const target = e.target;
+  if (target.tagName != "LI") return;
+  target.classList.remove("highlight");
+}
+
+// populate form when clicking on a suggestion
+function populateForm(e) {
+  const target = e.target;
+  if (target.tagName != "LI") return;
+  searchInput.value = target.innerHTML;
+}
+
 
 
 
@@ -68,7 +88,6 @@ function setSeconds(seconds) {
 function setTime() {
   const rotationOffset = 90;
 
-  date.innerHTML = getUTCTime() + "timezone offset is: ";
 
   const seconds = getUTCTime().seconds;
   const minutes = getUTCTime().minutes;
@@ -107,4 +126,9 @@ setInterval(setTime, 1000);
 
 searchInput.addEventListener("change", displayMatches);
 searchInput.addEventListener("keyup", displayMatches);
+
+searchForm.addEventListener("mousemove", addHighlight);
+searchForm.addEventListener("mouseout", removeHighlight);
+
+suggestions.addEventListener("click", populateForm);
 searchForm.addEventListener("submit", makeClock);
