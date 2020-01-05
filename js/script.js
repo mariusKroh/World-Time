@@ -8,6 +8,9 @@ const searchForm = document.querySelector(".search-form");
 const searchInput = document.querySelector(".search");
 const submitButton = document.querySelector(".make-clock")
 const suggestions = document.querySelector(".suggestions")
+let utcOffset = 0;
+
+// N E E D S  P R O P E R  V A R I A B L E  N A M E S 
 
 // get timezones.json
 fetch(endpoint)
@@ -29,7 +32,7 @@ function displayMatches() {
     const regex = new RegExp(this.value, 'gi');
     const cityName = place.city.replace(regex, `${this.value}`)
     const countryName = place.country.replace(regex, `${this.value}`)
-    return `<li class="suggestion">${cityName}, ${countryName} UTCOffset: ${place.offset}</li>`;
+    return `<li class="suggestion">${cityName}, ${countryName}</li>`;
   }).join("")
   suggestions.innerHTML = html;
 }
@@ -54,18 +57,21 @@ function populateForm(e) {
   searchInput.value = target.innerHTML;
 }
 
-
-
-
-function pauseTransition(currentValue) {
-  if (currentValue === 0) {
-    secondHand.classList.remove("transition")
-  } else {
-    secondHand.classList.add("transition");
-  }
-  // needs update not to call each second, do we actually need seconds in a world clock?
+// get UTC Offset from search input & make the clock
+function makeClock() {
+  event.preventDefault()
+  const userInput = searchInput.value.split(",");
+  const regex = new RegExp(userInput[0], 'gi');
+  const offset = timezones.filter(item => {
+    return item.city.match(regex)
+  }).map(item => {
+    return item.offset
+  })
+  console.log(offset);
+  //setTime(utcOffset);
 }
 
+// clock functions
 
 function getUTCTime() {
   const now = new Date()
@@ -80,40 +86,36 @@ function getUTCTime() {
 }
 
 function setSeconds(seconds) {
-
   let secondHandRotation = 90 + (seconds * 6);
   return secondHandRotation
 }
 
-function setTime() {
-  const rotationOffset = 90;
+function setMinutes(minutes) {
+  let minuteHandRotation = 90 + (minutes * 6);
+  return minuteHandRotation
+}
 
+function setHours(hours) {
+  let hourHandRotation = 90 + (hours * 30);
+  return hourHandRotation
+}
 
+function setTime(offset) {
   const seconds = getUTCTime().seconds;
   const minutes = getUTCTime().minutes;
   const hours = getUTCTime().hours;
   pauseTransition(seconds);
-
-
-
   secondHand.style.transform = `rotate(${setSeconds(seconds)}deg)`;
+  minHand.style.transform = `rotate(${setMinutes(minutes)}deg)`;
+  hourHand.style.transform = `rotate(${setHours(hours)}deg)`;
 
-  const minutesDegrees = (minutes / 60) * 360 + 90;
-  minHand.style.transform = `rotate(${minutesDegrees}deg)`;
-
-  const hoursDegrees = (hours / 12) * 360 + 90;
-  hourHand.style.transform = `rotate(${hoursDegrees}deg)`;
 
   // set Background
   //setBackground(minutes, seconds, hours);
 
 }
 
-function makeClock() {
-  event.preventDefault()
-  const userInput = searchInput.value;
 
-}
 
 // function setBackground(h, s, l) {
 //   const hue = h * 6;
@@ -123,6 +125,17 @@ function makeClock() {
 // }
 
 setInterval(setTime, 1000);
+
+
+function pauseTransition(currentValue) {
+  if (currentValue === 0) {
+    secondHand.classList.remove("transition")
+  } else {
+    secondHand.classList.add("transition");
+  }
+  // needs update not to call each second, do we actually need seconds in a world clock?
+}
+
 
 searchInput.addEventListener("change", displayMatches);
 searchInput.addEventListener("keyup", displayMatches);
