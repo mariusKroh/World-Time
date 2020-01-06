@@ -1,6 +1,7 @@
 :root {
   --containerBackground: hsl(100, 100%, 100%);
   --clockBackground: #ffffff;
+  --monospace: monospace;
 }
 
 html {
@@ -10,16 +11,60 @@ html {
 
 body {
   background-color: #eeeeee;
+  font-family: var(--monospace);
   display: flex;
-  background-size: cover;
+  flex-direction: column;
   width: 100vw;
   height: 100vh;
   margin: 0;
 }
+
+.search-bar {
+  background-color: black;
+  padding: 20px;
+  display: flex;
+}
+.search-form {
+}
+
+.search-bar [type="text"] {
+  background-color: black;
+  border: 2px solid white;
+  color: white;
+  font-family: var(--monospace);
+  font-size: 18px;
+  line-height: 18px;
+  padding: 5px;
+}
+
+.search-bar [type="submit"] {
+  background-color: black;
+  border: 2px solid white;
+  color: white;
+  font-family: var(--monospace);
+  font-size: 18px;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.suggestions {
+  color: white;
+  list-style: none;
+  padding: 0;
+  border: 2px solid white;
+  font-size: 18px;
+  transition: all 0.5s;
+}
+
+.suggestion {
+  border-bottom: 2px solid white;
+  padding: 5px;
+  cursor: pointer;
+}
+
 .clock-container {
   background-color: var(--containerBackground);
-  width: 100%;
-  margin: 50px;
+  width: 50%;
   display: flex;
   flex-direction: column;
 }
@@ -80,17 +125,13 @@ body {
   transition-timing-function: cubic-bezier(0.1, 2.7, 0.58, 1);
 }
 
-.suggestions {
-  list-style: none;
-  background-color: red;
-}
-.suggestion,
 .timezoneoffset {
   color: white;
   font-size: 16px;
 }
 
 .highlight {
-  background-color: black;
-  color: white;
+  background-color: white;
+  color: black;
+  transition: all 0.2s;
 }
