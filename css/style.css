@@ -55,12 +55,24 @@ body {
 
 .hand {
   width: 50%;
-  height: 6px;
   background: red;
   position: absolute;
   top: 50%;
   transform-origin: 100%;
   transform: rotate(90deg);
+}
+
+.hour-hand {
+  height: 6px;
+  background: black;
+}
+
+.min-hand {
+  height: 6px;
+}
+
+.second-hand {
+  height: 3px;
 }
 
 .transition {
