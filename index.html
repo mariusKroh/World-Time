@@ -9,18 +9,21 @@
     <title>jsClock</title>
   </head>
   <body>
-    <form class="search-form" autocomplete="off">
-      <input
-        type="text"
-        class="search"
-        name="timezone"
-        placeholder="enter city"
-        value=""
-      />
-      <input type="submit" class="make-clock" name="make-clock" />
+    <div class="search-bar">
+      <form class="search-form" autocomplete="off">
+        <input
+          type="text"
+          class="search"
+          name="timezone"
+          placeholder="enter city"
+          value=""
+        />
+        <input type="submit" class="make-clock" name="make-clock" />
 
-      <ul class="suggestions"></ul>
-    </form>
+        <ul class="suggestions"></ul>
+      </form>
+    </div>
+
     <div id="wrapper">
       <div class="clock-container">
         <div class="clock">
