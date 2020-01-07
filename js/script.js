@@ -17,18 +17,21 @@ fetch(endpoint)
 // S E A R C H   F U N C T I O N A L I T Y
 // Find & display search query
 function findMatches(wordToMatch, timezones) {
+
   return timezones.filter(place => {
     const regex = new RegExp(wordToMatch, 'gi');
     return place.city.match(regex) || place.country.match(regex);
   });
 }
 
+
 function displayMatches() {
   const matchArray = findMatches(this.value, timezones);
+  console.log(matchArray);
   const html = matchArray.map(place => {
     const regex = new RegExp(this.value, 'gi');
-    const cityName = place.city.replace(regex, `${this.value}`);
-    const countryName = place.country.replace(regex, `${this.value}`);
+    const cityName = place.city.replace(regex, this.value);
+    const countryName = place.country.replace(regex, this.value);
     return `<li class="suggestion">${cityName}, ${countryName}</li>`;
   }).join("");
   suggestions.innerHTML = html;
@@ -68,11 +71,10 @@ function getHands() {
   }
 }
 
-// get UTC Offset from search input & make the clock
+// Get UTC Offset from search input & make the clock
 function makeClock() {
   event.preventDefault()
   const userInput = searchInput.value.split(",");
-  console.log(userInput)
   const regex = new RegExp(userInput[0], 'gi');
   const offset = timezones.filter(item => {
     return item.city.match(regex)
@@ -137,6 +139,17 @@ function getUTCTime() {
     hours: utcHours,
     minutes: utcMinutes,
     seconds: utcSeconds
+  }
+}
+
+function calculateOffset(value) {
+  const totalMinutes = value * 60;
+  const offsetMinutes = totalMinutes % 60;
+  const offsetHours = (totalMinutes - offsetMinutes) / 60;
+  return {
+    offsetMinutes: offsetMinutes,
+    offsetHours: offsetHours
+
   }
 }
 
@@ -211,3 +224,12 @@ suggestions.addEventListener("click", populateForm);
 //suggestions.addEventListener("mousemove", populateForm);
 
 searchForm.addEventListener("submit", makeClock);
+
+
+///* TO DO 
+//   - no empty submit ( or create utc when empty)
+// - error when submitting non list place
+//- handle utc offset in h and min
+//- handle daylight savings
+//- minor menu things (click somewhere to close suggestions fE)
+//- terminate clock function
