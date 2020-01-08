@@ -4,25 +4,34 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto+Mono:400,400i,500,500i&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" type="text/css" href="css/style.css" />
 
-    <title>jsClock</title>
+    <title>World:Time</title>
   </head>
   <body>
-    <div class="search-bar">
-      <form class="search-form" autocomplete="off">
-        <input
-          type="text"
-          class="search"
-          name="timezone"
-          placeholder="enter city"
-          value=""
-        />
-        <input type="submit" class="make-clock" name="make-clock" />
+    <nav id="top-bar">
+      <div class="title">
+        <h1>World<span class="blink">:</span>Time</h1>
+      </div>
+      <div class="search-bar">
+        <form class="search-form" autocomplete="off">
+          <input
+            type="text"
+            class="search-input"
+            name="timezone"
+            placeholder="&#x2315;"
+            value=""
+          />
 
-        <ul class="suggestions"></ul>
-      </form>
-    </div>
+          <ul class="suggestions"></ul>
+        </form>
+        <div class="menu">☰</div>
+      </div>
+    </nav>
 
     <div id="wrapper">
       <div class="clock-container">
