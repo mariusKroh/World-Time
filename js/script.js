@@ -1,43 +1,43 @@
-const endpoint = "https://raw.githubusercontent.com/mariusKroh/worldTime/master/timezones.json";
+// S E T U P
+
+const endpoint =
+  "https://raw.githubusercontent.com/mariusKroh/worldTime/master/timezones.json";
 const timezones = [];
 const wrapper = document.querySelector("#wrapper");
 const searchForm = document.querySelector(".search-form");
-const searchInput = document.querySelector(".search");
-const submitButton = document.querySelector(".make-clock");
+const searchInput = document.querySelector(".search-input");
 const suggestions = document.querySelector(".suggestions");
 
-// N E E D S  P R O P E R  V A R I A B L E  N A M E S 
-
-// Get timezones from JSON & populate timezones arr
 fetch(endpoint)
   .then(blob => blob.json())
   .then(data => timezones.push(...data))
   .catch(err => console.log(err));
 
+// R E F A C T O R    I N   T H E   E N D   :)
+
 // S E A R C H   F U N C T I O N A L I T Y
 // Find & display search query
 function findMatches(wordToMatch, timezones) {
-
   return timezones.filter(place => {
-    const regex = new RegExp(wordToMatch, 'gi');
+    const regex = new RegExp(wordToMatch, "gi");
     return place.city.match(regex) || place.country.match(regex);
   });
 }
 
-
 function displayMatches() {
   const matchArray = findMatches(this.value, timezones);
-  console.log(matchArray);
-  const html = matchArray.map(place => {
-    const regex = new RegExp(this.value, 'gi');
-    const cityName = place.city.replace(regex, this.value);
-    const countryName = place.country.replace(regex, this.value);
-    return `<li class="suggestion">${cityName}, ${countryName}</li>`;
-  }).join("");
+  const html = matchArray
+    .map(place => {
+      const cityName = place.city;
+      const countryName = place.country;
+      //const utcOffset = place.offset;
+      return `<li class="suggestion">${cityName}, ${countryName}</li>`;
+    })
+    .join("");
   suggestions.innerHTML = html;
 }
 
-// toggle highlight class on mouseover - can probably be simplified
+// toggle highlight class on mouseover -> can probably be simplified
 function addHighlight(e) {
   const target = e.target;
   if (target.tagName != "LI") return;
@@ -50,40 +50,31 @@ function removeHighlight(e) {
   target.classList.remove("highlight");
 }
 
-// populate form when clicking on a suggestion
-function populateForm(e) {
-  console.log(e);
+// Load clock when clicking suggestion
+function makeClock(e) {
   const target = e.target;
-  if (target.tagName != "LI") return;
-  searchInput.value = target.innerHTML;
+  const content = target.textContent.split(",");
+  const regex = new RegExp(content[0], "gi");
+  const offset = timezones
+    .filter(item => {
+      return item.city.match(regex);
+    })
+    .map(item => {
+      return item.offset;
+    })
+    .join("");
+  renderClock(content, offset);
+
   suggestions.innerHTML = "";
 }
 
-// Get all hands of all clocks 
+// Get all hands of all clocks
 function getHands() {
-  const secondHands = document.querySelectorAll(".second-hand");
-  const minHands = document.querySelectorAll(".min-hand");
-  const hourHands = document.querySelectorAll(".hour-hand");
   return {
-    secondHand: secondHands,
-    minHand: minHands,
-    hourHand: hourHands
-  }
-}
-
-// Get UTC Offset from search input & make the clock
-function makeClock() {
-  event.preventDefault()
-  const userInput = searchInput.value.split(",");
-  const regex = new RegExp(userInput[0], 'gi');
-  const offset = timezones.filter(item => {
-    return item.city.match(regex)
-  }).map(item => {
-    return item.offset
-  }).join("");
-  renderClock(userInput, offset);
-  searchInput.value = "";
-  suggestions.innerHTML = "";
+    secondHand: document.querySelectorAll(".second-hand"),
+    minHand: document.querySelectorAll(".min-hand"),
+    hourHand: document.querySelectorAll(".hour-hand")
+  };
 }
 
 function renderClock(city, offset) {
@@ -99,7 +90,6 @@ function renderClock(city, offset) {
   const minHand = document.createElement("div");
   const secondHand = document.createElement("div");
 
-
   container.classList.add("clock-container");
   clock.classList.add("clock");
   info.classList.add("info");
@@ -108,10 +98,16 @@ function renderClock(city, offset) {
   clockFace.classList.add("clock-face");
   hourHand.classList.add("hand");
   hourHand.classList.add("hour-hand");
-  hourHand.setAttribute("utc-offset-hours", calculateOffset(utcOffset).offsetHours);
+  hourHand.setAttribute(
+    "utc-offset-hours",
+    calculateOffset(utcOffset).offsetHours
+  );
   minHand.classList.add("hand");
   minHand.classList.add("min-hand");
-  minHand.setAttribute("utc-offset-minutes", calculateOffset(utcOffset).offsetMinutes);
+  minHand.setAttribute(
+    "utc-offset-minutes",
+    calculateOffset(utcOffset).offsetMinutes
+  );
   secondHand.classList.add("hand");
   secondHand.classList.add("second-hand");
   wrapper.appendChild(container);
@@ -124,19 +120,19 @@ function renderClock(city, offset) {
   clockFace.appendChild(minHand);
   clockFace.appendChild(secondHand);
 
-  clockName.innerHTML = `${name}`
+  clockName.innerHTML = `${name}`;
   terminate.innerHTML = `╳`;
 }
 
 // clock functions
 
 function getUTCTime() {
-  const now = new Date()
+  const now = new Date();
   return {
     hours: now.getUTCHours(),
     minutes: now.getUTCMinutes(),
     seconds: now.getUTCSeconds()
-  }
+  };
 }
 
 function calculateOffset(value) {
@@ -146,22 +142,22 @@ function calculateOffset(value) {
   return {
     offsetMinutes: offsetMinutes,
     offsetHours: offsetHours
-  }
+  };
 }
 
 function setSeconds(seconds) {
-  const secondHandRotation = 90 + (seconds * 6);
-  return secondHandRotation
+  const secondHandRotation = 90 + seconds * 6;
+  return secondHandRotation;
 }
 
 function setMinutes(minutes) {
-  const minuteHandRotation = 90 + (minutes * 6);
-  return minuteHandRotation
+  const minuteHandRotation = 90 + minutes * 6;
+  return minuteHandRotation;
 }
 
 function setHours(hours) {
-  const hourHandRotation = 90 + (hours * 30);
-  return hourHandRotation
+  const hourHandRotation = 90 + hours * 30;
+  return hourHandRotation;
 }
 // set time for each of the clocks, still need to separate offset in hours & minutes + include daylight savings
 function setTime() {
@@ -176,19 +172,17 @@ function setTime() {
     hand.style.transform = `rotate(${setSeconds(seconds)}deg)`;
   });
   allMinutes.forEach(hand => {
-    hand.style.transform = `rotate(${setMinutes(minutes)}deg)`;
+    const offset = hand.getAttribute("utc-offset-minutes");
+    hand.style.transform = `rotate(${setMinutes(minutes) + offset * 6}deg)`;
   });
   allHours.forEach(hand => {
     const offset = hand.getAttribute("utc-offset-hours");
-    hand.style.transform = `rotate(${(setHours(hours))+ offset * 30 }deg)`;
+    hand.style.transform = `rotate(${setHours(hours) + offset * 30}deg)`;
   });
 
   // set Background
   //setBackground(minutes, seconds, hours);
-
 }
-
-
 
 // function setBackground(h, s, l) {
 //   const hue = h * 6;
@@ -199,7 +193,6 @@ function setTime() {
 
 setInterval(setTime, 1000);
 
-
 //function pauseTransition(currentValue) {
 // if (currentValue === 0) {
 //   secondHand.classList.remove("transition")
@@ -209,20 +202,17 @@ setInterval(setTime, 1000);
 // needs update not to call each second, do we actually need seconds in a world clock?
 //}
 
-
 searchInput.addEventListener("change", displayMatches);
 searchInput.addEventListener("keyup", displayMatches);
 
-searchForm.addEventListener("mousemove", addHighlight);
-searchForm.addEventListener("mouseout", removeHighlight);
+suggestions.addEventListener("mousemove", addHighlight);
+suggestions.addEventListener("mouseout", removeHighlight);
+suggestions.addEventListener("mouseup", makeClock);
 
-suggestions.addEventListener("click", populateForm);
 //suggestions.addEventListener("mousemove", populateForm);
 
-searchForm.addEventListener("submit", makeClock);
-
-
-///* TO DO 
+///* TO DO
+// - needs different logic for utc offset + minutes
 //   - no empty submit ( or create utc when empty)
 // - error when submitting non list place
 //- handle utc offset in h and min
