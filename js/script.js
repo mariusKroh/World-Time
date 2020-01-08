@@ -87,7 +87,6 @@ function makeClock() {
 }
 
 function renderClock(city, offset) {
-  console.log(offset);
   const name = city;
   const utcOffset = offset;
   const container = document.createElement("div");
@@ -109,9 +108,10 @@ function renderClock(city, offset) {
   clockFace.classList.add("clock-face");
   hourHand.classList.add("hand");
   hourHand.classList.add("hour-hand");
-  hourHand.setAttribute("utc-offset-hours", offset);
+  hourHand.setAttribute("utc-offset-hours", calculateOffset(utcOffset).offsetHours);
   minHand.classList.add("hand");
   minHand.classList.add("min-hand");
+  minHand.setAttribute("utc-offset-minutes", calculateOffset(utcOffset).offsetMinutes);
   secondHand.classList.add("hand");
   secondHand.classList.add("second-hand");
   wrapper.appendChild(container);
@@ -124,7 +124,7 @@ function renderClock(city, offset) {
   clockFace.appendChild(minHand);
   clockFace.appendChild(secondHand);
 
-  clockName.innerHTML = `${name} UTCOffset is: ${utcOffset}`
+  clockName.innerHTML = `${name}`
   terminate.innerHTML = `╳`;
 }
 
@@ -132,13 +132,10 @@ function renderClock(city, offset) {
 
 function getUTCTime() {
   const now = new Date()
-  const utcHours = now.getUTCHours();
-  const utcMinutes = now.getUTCMinutes();
-  const utcSeconds = now.getUTCSeconds();
   return {
-    hours: utcHours,
-    minutes: utcMinutes,
-    seconds: utcSeconds
+    hours: now.getUTCHours(),
+    minutes: now.getUTCMinutes(),
+    seconds: now.getUTCSeconds()
   }
 }
 
@@ -149,7 +146,6 @@ function calculateOffset(value) {
   return {
     offsetMinutes: offsetMinutes,
     offsetHours: offsetHours
-
   }
 }
 
