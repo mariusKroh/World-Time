@@ -37,7 +37,7 @@ function displayMatches() {
   suggestions.innerHTML = html;
 }
 
-// toggle highlight class on mouseover -> can probably be simplified
+// Toggle highlight class on mouseover
 function addHighlight(e) {
   const target = e.target;
   if (target.tagName != "LI") return;
@@ -63,8 +63,16 @@ function makeClock(e) {
       return item.offset;
     })
     .join("");
-  renderClock(content, offset);
-
+  const daylightSavings = timezones
+    .filter(item => {
+      return item.city.match(regex);
+    })
+    .map(item => {
+      return item.isdst;
+    })
+    .join("");
+  renderClock(content, offset, daylightSavings);
+  searchInput.value = "";
   suggestions.innerHTML = "";
 }
 
@@ -77,8 +85,11 @@ function getHands() {
   };
 }
 
-function renderClock(city, offset) {
+// Render clock to DOM
+
+function renderClock(city, offset, isdst) {
   const name = city;
+  const daylightSavings = isdst;
   const utcOffset = offset;
   const container = document.createElement("div");
   const info = document.createElement("div");
@@ -89,6 +100,7 @@ function renderClock(city, offset) {
   const hourHand = document.createElement("div");
   const minHand = document.createElement("div");
   const secondHand = document.createElement("div");
+  console.log(daylightSavings);
 
   container.classList.add("clock-container");
   clock.classList.add("clock");
@@ -137,8 +149,16 @@ function getUTCTime() {
 
 function calculateOffset(value) {
   const totalMinutes = value * 60;
+  let fixHours = 0;
   const offsetMinutes = totalMinutes % 60;
-  const offsetHours = (totalMinutes - offsetMinutes) / 60;
+
+  // messy fix for incorrect display of time when offset also contains minutes
+  const currentMinutes = getUTCTime().minutes;
+  if (currentMinutes + offsetMinutes >= 60) {
+    fixHours = 1;
+  }
+  const offsetHours = (totalMinutes - offsetMinutes) / 60 + fixHours;
+
   return {
     offsetMinutes: offsetMinutes,
     offsetHours: offsetHours
@@ -213,9 +233,6 @@ suggestions.addEventListener("mouseup", makeClock);
 
 ///* TO DO
 // - needs different logic for utc offset + minutes
-//   - no empty submit ( or create utc when empty)
-// - error when submitting non list place
 //- handle utc offset in h and min
 //- handle daylight savings
-//- minor menu things (click somewhere to close suggestions fE)
 //- terminate clock function
