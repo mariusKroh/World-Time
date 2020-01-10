@@ -13,8 +13,6 @@ fetch(endpoint)
   .then(data => timezones.push(...data))
   .catch(err => console.log(err));
 
-// R E F A C T O R    I N   T H E   E N D   :)
-
 // S E A R C H   F U N C T I O N A L I T Y
 // Find & display search query
 function findMatches(wordToMatch, timezones) {
@@ -50,6 +48,46 @@ function removeHighlight(e) {
   target.classList.remove("highlight");
 }
 
+// Accessible menu with up,down and enter keys
+
+function navigateSuggestions(e) {
+  if (e.keyCode != 38 && e.keyCode != 40) return;
+  // Add IDs to each list element
+  const listElements = document.querySelectorAll(".suggestion");
+  listElements.forEach((element, index) => {
+    element.id = index;
+  });
+  if (e.keyCode === 40 && !hasHighlight(listElements)) {
+    suggestions.firstChild.classList.add("highlight");
+    searchInput.blur();
+  } else if (e.keyCode === 40 && hasHighlight(listElements)) {
+    const current = whichHighlight(listElements);
+    let activeID = current[0].id;
+    current[0].classList.remove("highlight");
+    activeID < listElements.length - 1 ? activeID++ : (activeID = 0);
+    console.log(activeID);
+
+    listElements[activeID].classList.add("highlight");
+    console.log(listElements.length);
+  }
+}
+// Check if any of all suggestion is already active
+function hasHighlight(suggestions) {
+  const isActive = [...suggestions].map(item => {
+    return item.classList.contains("highlight");
+  });
+  const bool = arr => arr.some(Boolean);
+  return bool(isActive);
+}
+
+// Return exact element which is active
+function whichHighlight(suggestions) {
+  const isActive = [...suggestions].filter(item => {
+    return item.classList.contains("highlight");
+  });
+  return isActive;
+}
+
 // Load clock when clicking suggestion
 function makeClock(e) {
   const target = e.target;
@@ -76,14 +114,7 @@ function makeClock(e) {
   suggestions.innerHTML = "";
 }
 
-// Get all hands of all clocks
-function getHands() {
-  return {
-    secondHand: document.querySelectorAll(".second-hand"),
-    minHand: document.querySelectorAll(".min-hand"),
-    hourHand: document.querySelectorAll(".hour-hand")
-  };
-}
+// C L O C K   S T U F F
 
 // Render clock to DOM
 
@@ -138,6 +169,15 @@ function renderClock(city, offset, isdst) {
 
 // clock functions
 
+// Get all hands of all clocks
+function getHands() {
+  return {
+    secondHand: document.querySelectorAll(".second-hand"),
+    minHand: document.querySelectorAll(".min-hand"),
+    hourHand: document.querySelectorAll(".hour-hand")
+  };
+}
+
 function getUTCTime() {
   const now = new Date();
   return {
@@ -151,14 +191,12 @@ function calculateOffset(value) {
   const totalMinutes = value * 60;
   let fixHours = 0;
   const offsetMinutes = totalMinutes % 60;
-
   // messy fix for incorrect display of time when offset also contains minutes
   const currentMinutes = getUTCTime().minutes;
   if (currentMinutes + offsetMinutes >= 60) {
     fixHours = 1;
   }
   const offsetHours = (totalMinutes - offsetMinutes) / 60 + fixHours;
-
   return {
     offsetMinutes: offsetMinutes,
     offsetHours: offsetHours
@@ -228,6 +266,8 @@ searchInput.addEventListener("keyup", displayMatches);
 suggestions.addEventListener("mousemove", addHighlight);
 suggestions.addEventListener("mouseout", removeHighlight);
 suggestions.addEventListener("mouseup", makeClock);
+
+window.addEventListener("keyup", navigateSuggestions);
 
 //suggestions.addEventListener("mousemove", populateForm);
 
