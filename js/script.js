@@ -35,16 +35,16 @@ function displayMatches() {
   suggestions.innerHTML = html;
 }
 
-// Toggle highlight class on mouseover
+// Get mouseevent or keypress on suggestions + toggle highlight class
 function addHighlight(e) {
-  const target = e.target;
-  if (target.tagName != "LI") return;
+  let target;
+  e.type === "mousemove" ? (target = e.target) : (target = e);
   target.classList.add("highlight");
 }
 
 function removeHighlight(e) {
-  const target = e.target;
-  if (target.tagName != "LI") return;
+  let target;
+  e.typ === "mouseout" ? (target = e.target) : (target = e);
   target.classList.remove("highlight");
 }
 
@@ -58,17 +58,16 @@ function navigateSuggestions(e) {
     element.id = index;
   });
   if (e.keyCode === 40 && !hasHighlight(listElements)) {
-    suggestions.firstChild.classList.add("highlight");
-    searchInput.blur();
-  } else if (e.keyCode === 40 && hasHighlight(listElements)) {
+    addHighlight(listElements[0]);
+    return;
+    // searchInput.blur();
+  } else if (e.keyCode === 40) {
     const current = whichHighlight(listElements);
     let activeID = current[0].id;
     current[0].classList.remove("highlight");
     activeID < listElements.length - 1 ? activeID++ : (activeID = 0);
-    console.log(activeID);
 
     listElements[activeID].classList.add("highlight");
-    console.log(listElements.length);
   }
 }
 // Check if any of all suggestion is already active
@@ -77,6 +76,8 @@ function hasHighlight(suggestions) {
     return item.classList.contains("highlight");
   });
   const bool = arr => arr.some(Boolean);
+  console.log(suggestions);
+  console.log(bool(isActive));
   return bool(isActive);
 }
 
