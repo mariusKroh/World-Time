@@ -44,7 +44,7 @@ function addHighlight(e) {
 
 function removeHighlight(e) {
   let target;
-  e.typ === "mouseout" ? (target = e.target) : (target = e);
+  e.type === "mouseout" ? (target = e.target) : (target = e);
   target.classList.remove("highlight");
 }
 
@@ -59,8 +59,6 @@ function navigateSuggestions(e) {
   });
   if (e.keyCode === 40 && !hasHighlight(listElements)) {
     addHighlight(listElements[0]);
-    return;
-    // searchInput.blur();
   } else if (e.keyCode === 40) {
     const current = whichHighlight(listElements);
     let activeID = current[0].id;
@@ -70,6 +68,7 @@ function navigateSuggestions(e) {
     listElements[activeID].classList.add("highlight");
   }
 }
+
 // Check if any of all suggestion is already active
 function hasHighlight(suggestions) {
   const isActive = [...suggestions].map(item => {
