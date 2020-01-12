@@ -23,7 +23,7 @@ function findMatches(wordToMatch, timezones) {
 }
 
 function displayMatches(e) {
-  if (e.keyCode <= 48 || e.keyCode >= 90) return;
+  if (e.keyCode === 38 || e.keyCode === 40) return;
 
   console.log(e.keyCode);
   const matchArray = findMatches(this.value, timezones);
@@ -130,6 +130,13 @@ function makeClock(e) {
   suggestions.innerHTML = "";
 }
 
+// Close suggestions when clicking somewhere else
+function closeSuggestions(e) {
+  if (e.target.tagName === "INPUT") return;
+  searchInput.value = "";
+  suggestions.innerHTML = "";
+}
+
 // C L O C K   S T U F F
 
 // Render clock to DOM
@@ -157,18 +164,22 @@ function renderClock(city, offset, isdst) {
   clockFace.classList.add("clock-face");
   hourHand.classList.add("hand");
   hourHand.classList.add("hour-hand");
+  hourHand.classList.add("transition");
+
   hourHand.setAttribute(
     "utc-offset-hours",
     calculateOffset(utcOffset).offsetHours
   );
   minHand.classList.add("hand");
   minHand.classList.add("min-hand");
+  minHand.classList.add("transition");
   minHand.setAttribute(
     "utc-offset-minutes",
     calculateOffset(utcOffset).offsetMinutes
   );
   secondHand.classList.add("hand");
   secondHand.classList.add("second-hand");
+  secondHand.classList.add("transition");
   wrapper.appendChild(container);
   container.appendChild(info);
   info.appendChild(clockName);
@@ -283,10 +294,12 @@ suggestions.addEventListener("mousemove", addHighlight);
 suggestions.addEventListener("mouseup", makeClock);
 
 window.addEventListener("keydown", navigateSuggestions);
+window.addEventListener("click", closeSuggestions);
 
 ///* TO DO
 // styling
 // hand transitions
+// close menu if clicking somewhere
 //- handle daylight savings
 //- terminate clock function
 //- return strings from filter
@@ -296,3 +309,5 @@ window.addEventListener("keydown", navigateSuggestions);
 // add localstorage
 // bonus:
 // no double clocks?
+// swicht to digital
+// toggle secondhand
