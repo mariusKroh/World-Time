@@ -1,7 +1,7 @@
 // S E T U P
 
 const endpoint =
-  "https://raw.githubusercontent.com/mariusKroh/worldTime/master/timezones.json";
+  "https://raw.githubusercontent.com/mariusKroh/simpleWorldTimeZones/master/timezones.json";
 const timezones = [];
 const wrapper = document.querySelector("#wrapper");
 const searchForm = document.querySelector(".search-form");
@@ -16,6 +16,10 @@ fetch(endpoint)
 // S E A R C H   F U N C T I O N A L I T Y
 // Find & display search query
 function findMatches(wordToMatch, timezones) {
+  if (wordToMatch === "") {
+    suggestions.innerHTML = "";
+    return;
+  }
   return timezones.filter(place => {
     const regex = new RegExp(wordToMatch, "gi");
     return place.city.match(regex) || place.country.match(regex);
@@ -24,8 +28,6 @@ function findMatches(wordToMatch, timezones) {
 
 function displayMatches(e) {
   if (e.keyCode === 38 || e.keyCode === 40) return;
-
-  console.log(e.keyCode);
   const matchArray = findMatches(this.value, timezones);
   const html = matchArray
     .map(place => {
@@ -40,6 +42,7 @@ function displayMatches(e) {
 
 // Get mouseevent or keypress on suggestions + toggle highlight class
 function addHighlight(e) {
+  if (suggestions.innerHTML === "") return;
   console.count("fire add highlight");
   let target;
   e.type === "mousemove" ? (target = e.target) : (target = e);
@@ -48,12 +51,10 @@ function addHighlight(e) {
   listElements.forEach(element => {
     element.classList.remove("highlight");
   });
-
   target.classList.add("highlight");
 }
-// Accessible menu with up,down and enter keys
-// Replace Condition with Polymorphism?
 
+// Accessible menu with up,down and enter keys
 function navigateSuggestions(e) {
   if (e.keyCode != 38 && e.keyCode != 40 && e.keyCode != 13) return;
   // Add IDs to each list element
@@ -84,7 +85,7 @@ function navigateSuggestions(e) {
   }
 }
 
-// Check if any of all suggestion is already active
+// Check if any suggestion is already active
 function hasHighlight(menuItems) {
   const isActive = [...menuItems].map(item => {
     return item.classList.contains("highlight");
@@ -93,7 +94,7 @@ function hasHighlight(menuItems) {
   return bool(isActive);
 }
 
-// Return exact element which is active
+// Return element which is active
 function whichHighlight(menuItems) {
   const which = [...menuItems].filter(item => {
     return item.classList.contains("highlight");
@@ -101,11 +102,18 @@ function whichHighlight(menuItems) {
   return which;
 }
 
-// Load clock when clicking suggestion
+// Close suggestions when clicking somewhere else
+function closeSuggestions(e) {
+  if (e.target.tagName === "INPUT") return;
+  searchInput.value = "";
+  suggestions.innerHTML = "";
+}
+
+// C L O C K   S T U F F
+// Prepare clock data
 function makeClock(e) {
   let target;
   e.type === "mouseup" ? (target = e.target) : (target = e);
-  console.log(target);
 
   const content = target.textContent.split(",");
   const regex = new RegExp(content[0], "gi");
@@ -130,21 +138,11 @@ function makeClock(e) {
   suggestions.innerHTML = "";
 }
 
-// Close suggestions when clicking somewhere else
-function closeSuggestions(e) {
-  if (e.target.tagName === "INPUT") return;
-  searchInput.value = "";
-  suggestions.innerHTML = "";
-}
-
-// C L O C K   S T U F F
-
 // Render clock to DOM
-
 function renderClock(city, offset, isdst) {
   const name = city;
-  const daylightSavings = isdst;
   const utcOffset = offset;
+  const daylightSavings = isdst;
   const container = document.createElement("div");
   const info = document.createElement("div");
   const clockName = document.createElement("div");
@@ -170,6 +168,7 @@ function renderClock(city, offset, isdst) {
     "utc-offset-hours",
     calculateOffset(utcOffset).offsetHours
   );
+  //hourHand.setAttribute("daylight-savings");
   minHand.classList.add("hand");
   minHand.classList.add("min-hand");
   minHand.classList.add("transition");
@@ -194,8 +193,6 @@ function renderClock(city, offset, isdst) {
   terminate.innerHTML = `╳`;
 }
 
-// clock functions
-
 // Get all hands of all clocks
 function getHands() {
   return {
@@ -205,6 +202,7 @@ function getHands() {
   };
 }
 
+// Get UTC time (no shit sherlock)
 function getUTCTime() {
   const now = new Date();
   return {
@@ -214,7 +212,7 @@ function getUTCTime() {
   };
 }
 
-function calculateOffset(value) {
+function calculateOffset(value, isdst) {
   const totalMinutes = value * 60;
   let fixHours = 0;
   const offsetMinutes = totalMinutes % 60;
@@ -249,7 +247,7 @@ function setTime() {
   const seconds = getUTCTime().seconds;
   const minutes = getUTCTime().minutes;
   const hours = getUTCTime().hours;
-  //pauseTransition(seconds);
+  pauseTransition(seconds);
   const allSeconds = getHands().secondHand;
   const allMinutes = getHands().minHand;
   const allHours = getHands().hourHand;
@@ -278,14 +276,30 @@ function setTime() {
 
 setInterval(setTime, 1000);
 
-//function pauseTransition(currentValue) {
-// if (currentValue === 0) {
-//   secondHand.classList.remove("transition")
-// } else {
-//   secondHand.classList.add("transition");
-// }
-// needs update not to call each second, do we actually need seconds in a world clock?
-//}
+// Pause transition at 0 to fix weird glitch (this is rudimentary)
+function pauseTransition(currentValue) {
+  const allSeconds = getHands().secondHand;
+  if (currentValue === 0) {
+    allSeconds.forEach(hand => {
+      hand.classList.remove("transition");
+    });
+  } else if (currentValue === 1) {
+    allSeconds.forEach(hand => {
+      hand.classList.add("transition");
+    });
+  } else {
+    return;
+  }
+}
+
+// Remove clock from DOM - but stylish
+
+function terminateClock(e) {
+  if (!e.target.classList.contains("terminate")) return;
+  const thisClock = e.target.closest(".clock-container");
+  thisClock.classList.add("fade-out");
+  setTimeout(() => thisClock.parentNode.removeChild(thisClock), 1000);
+}
 
 searchInput.addEventListener("change", displayMatches);
 searchInput.addEventListener("keyup", displayMatches);
@@ -295,11 +309,12 @@ suggestions.addEventListener("mouseup", makeClock);
 
 window.addEventListener("keydown", navigateSuggestions);
 window.addEventListener("click", closeSuggestions);
+window.addEventListener("click", terminateClock);
 
 ///* TO DO
 // styling
 // hand transitions
-// close menu if clicking somewhere
+// info menu
 //- handle daylight savings
 //- terminate clock function
 //- return strings from filter
@@ -311,3 +326,6 @@ window.addEventListener("click", closeSuggestions);
 // no double clocks?
 // swicht to digital
 // toggle secondhand
+// color styles
+// smooth loading of clocks
+// am/pm
