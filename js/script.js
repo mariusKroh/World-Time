@@ -11,7 +11,7 @@ const suggestions = document.querySelector(".suggestions");
 fetch(endpoint)
   .then(blob => blob.json())
   .then(data => timezones.push(...data))
-  .catch(err => console.log(err));
+  .catch(err => console.error(err));
 
 // S E A R C H   F U N C T I O N A L I T Y
 // Find & display search query
@@ -40,6 +40,7 @@ function displayMatches(e) {
 
 // Get mouseevent or keypress on suggestions + toggle highlight class
 function addHighlight(e) {
+  console.count("fire add highlight");
   let target;
   e.type === "mousemove" ? (target = e.target) : (target = e);
   // prevent highlighting of more than one result by first deactivating all
@@ -50,18 +51,11 @@ function addHighlight(e) {
 
   target.classList.add("highlight");
 }
-// do i need this? can be done with 1 func
-function removeHighlight(e) {
-  let target;
-  e.type === "mouseout" ? (target = e.target) : (target = e);
-  target.classList.remove("highlight");
-}
-
 // Accessible menu with up,down and enter keys
 // Replace Condition with Polymorphism?
 
 function navigateSuggestions(e) {
-  if (e.keyCode != 38 && e.keyCode != 40) return;
+  if (e.keyCode != 38 && e.keyCode != 40 && e.keyCode != 13) return;
   // Add IDs to each list element
   let listElements = document.querySelectorAll(".suggestion");
   listElements.forEach((element, index) => {
@@ -77,12 +71,16 @@ function navigateSuggestions(e) {
   } else if (e.keyCode === 38 && !hasHighlight(listElements)) {
     const lastItem = listElements.length - 1;
     addHighlight(listElements[lastItem]);
-  } else {
+  } else if (e.keyCode === 38) {
     const lastItem = listElements.length - 1;
     const current = whichHighlight(listElements);
     let activeID = current[0].id;
     activeID > 0 ? activeID-- : (activeID = lastItem);
     addHighlight(listElements[activeID]);
+  } else {
+    e.preventDefault();
+    const current = whichHighlight(listElements);
+    makeClock(current[0]);
   }
 }
 
@@ -100,13 +98,15 @@ function whichHighlight(menuItems) {
   const which = [...menuItems].filter(item => {
     return item.classList.contains("highlight");
   });
-  console.log(which);
   return which;
 }
 
 // Load clock when clicking suggestion
 function makeClock(e) {
-  const target = e.target;
+  let target;
+  e.type === "mouseup" ? (target = e.target) : (target = e);
+  console.log(target);
+
   const content = target.textContent.split(",");
   const regex = new RegExp(content[0], "gi");
   const offset = timezones
@@ -280,15 +280,19 @@ searchInput.addEventListener("change", displayMatches);
 searchInput.addEventListener("keyup", displayMatches);
 
 suggestions.addEventListener("mousemove", addHighlight);
-suggestions.addEventListener("mouseout", removeHighlight);
 suggestions.addEventListener("mouseup", makeClock);
 
 window.addEventListener("keydown", navigateSuggestions);
 
-//suggestions.addEventListener("mousemove", populateForm);
-
 ///* TO DO
-// - needs different logic for utc offset + minutes
-//- handle utc offset in h and min
+// styling
+// hand transitions
 //- handle daylight savings
 //- terminate clock function
+//- return strings from filter
+// clean up conditionals
+// clean up variable & parameter names
+// prevent firing highlight too often
+// add localstorage
+// bonus:
+// no double clocks?
