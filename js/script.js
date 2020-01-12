@@ -22,7 +22,10 @@ function findMatches(wordToMatch, timezones) {
   });
 }
 
-function displayMatches() {
+function displayMatches(e) {
+  if (e.keyCode <= 48 || e.keyCode >= 90) return;
+
+  console.log(e.keyCode);
   const matchArray = findMatches(this.value, timezones);
   const html = matchArray
     .map(place => {
@@ -39,9 +42,15 @@ function displayMatches() {
 function addHighlight(e) {
   let target;
   e.type === "mousemove" ? (target = e.target) : (target = e);
+  // prevent highlighting of more than one result by first deactivating all
+  const listElements = document.querySelectorAll(".suggestion");
+  listElements.forEach(element => {
+    element.classList.remove("highlight");
+  });
+
   target.classList.add("highlight");
 }
-
+// do i need this? can be done with 1 func
 function removeHighlight(e) {
   let target;
   e.type === "mouseout" ? (target = e.target) : (target = e);
@@ -49,11 +58,12 @@ function removeHighlight(e) {
 }
 
 // Accessible menu with up,down and enter keys
+// Replace Condition with Polymorphism?
 
 function navigateSuggestions(e) {
   if (e.keyCode != 38 && e.keyCode != 40) return;
   // Add IDs to each list element
-  const listElements = document.querySelectorAll(".suggestion");
+  let listElements = document.querySelectorAll(".suggestion");
   listElements.forEach((element, index) => {
     element.id = index;
   });
@@ -62,30 +72,36 @@ function navigateSuggestions(e) {
   } else if (e.keyCode === 40) {
     const current = whichHighlight(listElements);
     let activeID = current[0].id;
-    current[0].classList.remove("highlight");
     activeID < listElements.length - 1 ? activeID++ : (activeID = 0);
-
-    listElements[activeID].classList.add("highlight");
+    addHighlight(listElements[activeID]);
+  } else if (e.keyCode === 38 && !hasHighlight(listElements)) {
+    const lastItem = listElements.length - 1;
+    addHighlight(listElements[lastItem]);
+  } else {
+    const lastItem = listElements.length - 1;
+    const current = whichHighlight(listElements);
+    let activeID = current[0].id;
+    activeID > 0 ? activeID-- : (activeID = lastItem);
+    addHighlight(listElements[activeID]);
   }
 }
 
 // Check if any of all suggestion is already active
-function hasHighlight(suggestions) {
-  const isActive = [...suggestions].map(item => {
+function hasHighlight(menuItems) {
+  const isActive = [...menuItems].map(item => {
     return item.classList.contains("highlight");
   });
   const bool = arr => arr.some(Boolean);
-  console.log(suggestions);
-  console.log(bool(isActive));
   return bool(isActive);
 }
 
 // Return exact element which is active
-function whichHighlight(suggestions) {
-  const isActive = [...suggestions].filter(item => {
+function whichHighlight(menuItems) {
+  const which = [...menuItems].filter(item => {
     return item.classList.contains("highlight");
   });
-  return isActive;
+  console.log(which);
+  return which;
 }
 
 // Load clock when clicking suggestion
@@ -267,7 +283,7 @@ suggestions.addEventListener("mousemove", addHighlight);
 suggestions.addEventListener("mouseout", removeHighlight);
 suggestions.addEventListener("mouseup", makeClock);
 
-window.addEventListener("keyup", navigateSuggestions);
+window.addEventListener("keydown", navigateSuggestions);
 
 //suggestions.addEventListener("mousemove", populateForm);
 
