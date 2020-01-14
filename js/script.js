@@ -45,6 +45,8 @@ function addHighlight(e) {
   if (suggestions.innerHTML === "") return;
   console.count("fire add highlight");
   let target;
+  console.log(e.type);
+
   e.type === "mousemove" ? (target = e.target) : (target = e);
   // prevent highlighting of more than one result by first deactivating all
   const listElements = document.querySelectorAll(".suggestion");
@@ -135,6 +137,7 @@ function makeClock(e) {
     .join("");
   renderClock(content, offset, daylightSavings);
   searchInput.value = "";
+  searchInput.blur();
   suggestions.innerHTML = "";
 }
 
