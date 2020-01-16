@@ -193,7 +193,7 @@ function renderClock(city, offset, isdst) {
   clockFace.appendChild(secondHand);
 
   clockName.innerHTML = `${name}`;
-  terminate.innerHTML = `╳`;
+  terminate.innerHTML = `✕`;
 }
 
 // Get all hands of all clocks
@@ -332,3 +332,5 @@ window.addEventListener("click", terminateClock);
 // color styles
 // smooth loading of clocks
 // am/pm
+// continous rotation of secondhand
+// hide menu bar
