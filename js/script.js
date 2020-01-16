@@ -258,12 +258,26 @@ function setTime() {
     }
   });
 
-  setBackground(minutes, seconds, hours);
+  setBackground();
 }
 
-// Get all clocks and set background according current time - trying to visualise day/night here
-function setBackground(h, m, s) {
+// Set background according to current time - trying to visualise day/night here
+function setBackground() {
   const allClocks = document.querySelectorAll(".clock");
+  allClocks.forEach(clock => {
+    const hourHand = document.querySelector(".hour-hand");
+    const minHand = document.querySelector(".min-hand");
+    const secondHand = document.querySelector(".second-hand");
+    // Get rotation values for each hand by stripping the string down to only the number
+    const hourHandRotation = hourHand.style.transform.replace(/\D/g, "");
+    const minHandRotation = minHand.style.transform.replace(/\D/g, "");
+    const secondHandRotation =
+      secondHand.style.transform.replace(/\D/g, "") - 90;
+    // Now do something with the background property
+    const colorDark = "#001c00";
+    const colorBright = "#f8f8f8";
+    clock.style.background = `linear-gradient(${secondHandRotation}deg, ${colorDark} 50%, ${colorBright} 100%`;
+  });
   // console.log(allClocks);
   // const hue = h * 6;
   //const saturation = s * (100 / 60);
@@ -271,7 +285,7 @@ function setBackground(h, m, s) {
   // container.style = `background-color:hsl(${hue},${saturation}%,${light}%)`;
 }
 
-// Pause transition at 0 to fix weird glitch (this is rudimentary, maybe switch statement)
+// Pause transition at 0 to fix weird glitch (this is rudimentary)
 function pauseTransition(currentValue) {
   const allSeconds = getHands().secondHand;
   if (currentValue === 0) {
