@@ -196,31 +196,13 @@ function renderClock(city, offset, isdst) {
   terminate.innerHTML = `✕`;
 }
 
-// Get all hands of all clocks
-function getHands() {
-  return {
-    secondHand: document.querySelectorAll(".second-hand"),
-    minHand: document.querySelectorAll(".min-hand"),
-    hourHand: document.querySelectorAll(".hour-hand")
-  };
-}
-
-// Get UTC time (no shit sherlock)
-function getUTCTime() {
-  const now = new Date();
-  return {
-    hours: now.getUTCHours(),
-    minutes: now.getUTCMinutes(),
-    seconds: now.getUTCSeconds()
-  };
-}
-
 function calculateOffset(value, isdst) {
+  const now = new Date();
+  const currentMinutes = now.getUTCMinutes();
   const totalMinutes = value * 60;
   let fixHours = 0;
   const offsetMinutes = totalMinutes % 60;
   // messy fix for incorrect display of time when offset also contains minutes
-  const currentMinutes = getUTCTime().minutes;
   if (currentMinutes + offsetMinutes >= 60) {
     fixHours = 1;
   }
@@ -229,6 +211,12 @@ function calculateOffset(value, isdst) {
     offsetMinutes: offsetMinutes,
     offsetHours: offsetHours
   };
+}
+
+// Get all hands of all clocks
+function getHands() {
+  const hands = document.querySelectorAll(".hand");
+  return hands;
 }
 
 function setSeconds(seconds) {
@@ -245,41 +233,45 @@ function setHours(hours) {
   const hourHandRotation = 90 + hours * 30;
   return hourHandRotation;
 }
-// set time for each of the clocks, still need to separate offset in hours & minutes + include daylight savings
+
+// Set time for each of the clocks,
+// still need to separate offset in hours & minutes + include daylight savings
 function setTime() {
-  const seconds = getUTCTime().seconds;
-  const minutes = getUTCTime().minutes;
-  const hours = getUTCTime().hours;
-  pauseTransition(seconds);
-  const allSeconds = getHands().secondHand;
-  const allMinutes = getHands().minHand;
-  const allHours = getHands().hourHand;
-  allSeconds.forEach(hand => {
-    hand.style.transform = `rotate(${setSeconds(seconds)}deg)`;
-  });
-  allMinutes.forEach(hand => {
-    const offset = hand.getAttribute("utc-offset-minutes");
-    hand.style.transform = `rotate(${setMinutes(minutes) + offset * 6}deg)`;
-  });
-  allHours.forEach(hand => {
-    const offset = hand.getAttribute("utc-offset-hours");
-    hand.style.transform = `rotate(${setHours(hours) + offset * 30}deg)`;
+  const now = new Date();
+  const hours = now.getUTCHours();
+  const minutes = now.getUTCMinutes();
+  const seconds = now.getUTCSeconds();
+  //const milliSeconds = now.getUTCMilliseconds();
+  //pauseTransition(seconds);
+
+  const allHands = getHands();
+
+  allHands.forEach(hand => {
+    if (hand.classList.contains("hour-hand")) {
+      const offset = hand.getAttribute("utc-offset-hours");
+      hand.style.transform = `rotate(${setHours(hours) + offset * 30}deg)`;
+    } else if (hand.classList.contains("min-hand")) {
+      const offset = hand.getAttribute("utc-offset-minutes");
+      hand.style.transform = `rotate(${setMinutes(minutes) + offset * 6}deg)`;
+    } else {
+      hand.style.transform = `rotate(${setSeconds(seconds)}deg)`;
+    }
   });
 
-  // set Background
-  //setBackground(minutes, seconds, hours);
+  setBackground(minutes, seconds, hours);
 }
 
-// function setBackground(h, s, l) {
-//   const hue = h * 6;
-//   const saturation = s * (100 / 60);
-//   const light = l * (100 / 60);
-//   container.style = `background-color:hsl(${hue},${saturation}%,${light}%)`
-// }
+// Get all clocks and set background according current time - trying to visualise day/night here
+function setBackground(h, m, s) {
+  const allClocks = document.querySelectorAll(".clock");
+  // console.log(allClocks);
+  // const hue = h * 6;
+  //const saturation = s * (100 / 60);
+  // const light = l * (100 / 60);
+  // container.style = `background-color:hsl(${hue},${saturation}%,${light}%)`;
+}
 
-setInterval(setTime, 1000);
-
-// Pause transition at 0 to fix weird glitch (this is rudimentary)
+// Pause transition at 0 to fix weird glitch (this is rudimentary, maybe switch statement)
 function pauseTransition(currentValue) {
   const allSeconds = getHands().secondHand;
   if (currentValue === 0) {
@@ -313,6 +305,8 @@ suggestions.addEventListener("mouseup", makeClock);
 window.addEventListener("keydown", navigateSuggestions);
 window.addEventListener("click", closeSuggestions);
 window.addEventListener("click", terminateClock);
+
+setInterval(setTime, 1000);
 
 ///* TO DO
 // styling
