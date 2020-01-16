@@ -67,7 +67,7 @@ body {
   @include flex-row;
   align-items: center;
   justify-content: space-between;
-  margin: 0.5rem 0.6rem;
+  margin: 0.5rem 0.6rem 1rem;
 
   .title {
     border-radius: $border-radius;
@@ -170,7 +170,7 @@ body {
   .info {
     @include flex-row;
     justify-content: space-between;
-    margin: 0.5rem 0.6rem;
+    margin: 0.5rem 0.6rem 0.7rem;
     padding: 0.2rem;
     font-size: $font-size-smaller;
     color: $color-bright;
