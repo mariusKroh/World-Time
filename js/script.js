@@ -273,6 +273,7 @@ function setBackground() {
     const minHandRotation = minHand.style.transform.replace(/\D/g, "");
     const secondHandRotation =
       secondHand.style.transform.replace(/\D/g, "") - 90;
+    console.log(secondHandRotation);
     // Now do something with the background property
     const colorDark = "#001c00";
     const colorBright = "#f8f8f8";
