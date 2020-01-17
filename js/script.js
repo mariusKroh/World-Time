@@ -234,18 +234,24 @@ function setHours(hours) {
   return hourHandRotation;
 }
 
-// Set time for each of the clocks,
-// still need to separate offset in hours & minutes + include daylight savings
+// Set time for each of the clocks by initializing with UTC time in ms
+// still need to include daylight savings
 function setTime() {
   const now = new Date();
-  const hours = now.getUTCHours();
-  const minutes = now.getUTCMinutes();
-  const seconds = now.getUTCSeconds();
-  //const milliSeconds = now.getUTCMilliseconds();
-  //pauseTransition(seconds);
-
+  const utc = new Date(now.getTime() + now.getTimezoneOffset() * 60000);
+  const then = new Date(
+    now.getFullYear(),
+    now.getMonth(),
+    now.getDate(),
+    0,
+    0,
+    0
+  );
+  const milliSeconds = utc.getTime() - then.getTime();
+  const hours = milliSeconds / (1000 * 60 * 60);
+  const minutes = hours * 60;
+  const seconds = minutes * 60;
   const allHands = getHands();
-
   allHands.forEach(hand => {
     if (hand.classList.contains("hour-hand")) {
       const offset = hand.getAttribute("utc-offset-hours");
@@ -257,7 +263,6 @@ function setTime() {
       hand.style.transform = `rotate(${setSeconds(seconds)}deg)`;
     }
   });
-
   setBackground();
 }
 
@@ -273,37 +278,14 @@ function setBackground() {
     const minHandRotation = minHand.style.transform.replace(/\D/g, "");
     const secondHandRotation =
       secondHand.style.transform.replace(/\D/g, "") - 90;
-    console.log(secondHandRotation);
     // Now do something with the background property
     const colorDark = "#001c00";
     const colorBright = "#f8f8f8";
     clock.style.background = `linear-gradient(${secondHandRotation}deg, ${colorDark} 50%, ${colorBright} 100%`;
   });
-  // console.log(allClocks);
-  // const hue = h * 6;
-  //const saturation = s * (100 / 60);
-  // const light = l * (100 / 60);
-  // container.style = `background-color:hsl(${hue},${saturation}%,${light}%)`;
-}
-
-// Pause transition at 0 to fix weird glitch (this is rudimentary)
-function pauseTransition(currentValue) {
-  const allSeconds = getHands().secondHand;
-  if (currentValue === 0) {
-    allSeconds.forEach(hand => {
-      hand.classList.remove("transition");
-    });
-  } else if (currentValue === 1) {
-    allSeconds.forEach(hand => {
-      hand.classList.add("transition");
-    });
-  } else {
-    return;
-  }
 }
 
 // Remove clock from DOM - but stylish
-
 function terminateClock(e) {
   if (!e.target.classList.contains("terminate")) return;
   const thisClock = e.target.closest(".clock-container");
@@ -325,10 +307,8 @@ setInterval(setTime, 1000);
 
 ///* TO DO
 // styling
-// hand transitions
 // info menu
 //- handle daylight savings
-//- terminate clock function
 //- return strings from filter
 // clean up conditionals
 // clean up variable & parameter names
