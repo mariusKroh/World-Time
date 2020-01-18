@@ -7,6 +7,9 @@ const wrapper = document.querySelector("#wrapper");
 const searchForm = document.querySelector(".search-form");
 const searchInput = document.querySelector(".search-input");
 const suggestions = document.querySelector(".suggestions");
+const title = document.querySelector(".title");
+const dots = document.querySelector(".dots-icon");
+const menu = document.querySelector("#slideout-menu");
 
 fetch(endpoint)
   .then(blob => blob.json())
@@ -111,6 +114,12 @@ function closeSuggestions(e) {
   suggestions.innerHTML = "";
 }
 
+// Toggle slideout-menu
+function toggleMenu() {
+  menu.classList.toggle("active");
+  dots.classList.toggle("invert-dots");
+  title.classList.toggle("invert-title");
+}
 // C L O C K   S T U F F
 // Prepare clock data
 function makeClock(e) {
@@ -296,7 +305,7 @@ function terminateClock(e) {
   thisClock.classList.add("fade-out");
   setTimeout(() => thisClock.parentNode.removeChild(thisClock), 1000);
 }
-
+dots.addEventListener("click", toggleMenu);
 searchInput.addEventListener("change", displayMatches);
 searchInput.addEventListener("keyup", displayMatches);
 

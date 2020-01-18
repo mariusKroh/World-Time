@@ -1,0 +1,17 @@
+@use "../base/variables";
+@use "../base/breakpoints";
+@use "../base/mixins";
+
+#slideout-menu {
+  background-color: variables.$color-bright;
+  height: 100vh;
+  width: 100vw;
+  top: -100vh;
+  position: absolute;
+  z-index: 1200;
+  transition: 1s;
+  transition-timing-function: cubic-bezier(0.47, 0.01, 0.36, 1.03);
+}
+.active {
+  top: 0 !important;
+}
