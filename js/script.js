@@ -155,7 +155,7 @@ function renderClock(city, offset, isdst) {
   const hourHand = document.createElement("div");
   const minHand = document.createElement("div");
   const secondHand = document.createElement("div");
-  console.log(daylightSavings);
+  //console.log(daylightSavings);
 
   container.classList.add("clock-container");
   clock.classList.add("clock");
@@ -166,7 +166,6 @@ function renderClock(city, offset, isdst) {
   hourHand.classList.add("hand");
   hourHand.classList.add("hour-hand");
   hourHand.classList.add("transition");
-
   hourHand.setAttribute(
     "utc-offset-hours",
     calculateOffset(utcOffset).offsetHours
@@ -263,25 +262,30 @@ function setTime() {
       hand.style.transform = `rotate(${setSeconds(seconds)}deg)`;
     }
   });
-  setBackground();
+  // setBackground();
 }
 
 // Set background according to current time - trying to visualise day/night here
 function setBackground() {
   const allClocks = document.querySelectorAll(".clock");
-  allClocks.forEach(clock => {
-    const hourHand = document.querySelector(".hour-hand");
-    const minHand = document.querySelector(".min-hand");
-    const secondHand = document.querySelector(".second-hand");
+  // Need each clock seperatly
+  allClocks.forEach((clock, index) => {
+    clock.id = `clock-${index}`;
+    const currentClock = document.querySelector(`#clock-${index}`);
+    const hourHand = currentClock.querySelector(".hour-hand");
+    const minHand = currentClock.querySelector(".min-hand");
+    const secondHand = currentClock.querySelector(".second-hand");
     // Get rotation values for each hand by stripping the string down to only the number
     const hourHandRotation = hourHand.style.transform.replace(/\D/g, "");
     const minHandRotation = minHand.style.transform.replace(/\D/g, "");
-    const secondHandRotation =
-      secondHand.style.transform.replace(/\D/g, "") - 90;
+    const secondHandRotation = secondHand.style.transform.replace(/\D/g, "");
     // Now do something with the background property
+    // But rotation is an ever increasing ms value!
+    // Needs a way to display time passed since beginning of current day!
+    console.table([hourHandRotation, minHandRotation, secondHandRotation]);
     const colorDark = "#001c00";
     const colorBright = "#f8f8f8";
-    clock.style.background = `linear-gradient(${secondHandRotation}deg, ${colorDark} 50%, ${colorBright} 100%`;
+    currentClock.style.background = `linear-gradient(${hourHandRotation}deg, ${colorDark} 50%, ${colorBright} 100%`;
   });
 }
 
