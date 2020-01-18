@@ -1,3 +1,5 @@
+@use "breakpoints";
+@use "slideout-menu";
 $font-size-standard: 20px;
 $font-size-smaller: 16px;
 $font-size-bigger: 24px;
@@ -11,10 +13,6 @@ $border-radius: 1px;
 $transition-short: all 0.5s;
 $transition-long: all 1s;
 $grid-column-count: 1;
-$viewport-5: 576px;
-$viewport-7: 768px;
-$viewport-9: 992px;
-$viewport-12: 1200px;
 
 @mixin flex-column {
   display: flex;
@@ -23,27 +21,6 @@ $viewport-12: 1200px;
 @mixin flex-row {
   display: flex;
   flex-direction: row;
-}
-
-@mixin sm {
-  @media (min-width: #{$viewport-5}) {
-    @content;
-  }
-}
-@mixin md {
-  @media (min-width: #{$viewport-7}) {
-    @content;
-  }
-}
-@mixin lg {
-  @media (min-width: #{$viewport-9}) {
-    @content;
-  }
-}
-@mixin xl {
-  @media (min-width: #{$viewport-12}) {
-    @content;
-  }
 }
 
 :root {
@@ -134,8 +111,11 @@ body {
       justify-content: center;
       align-items: center;
       cursor: pointer;
-
       padding: 0.1rem;
+      transition: $transition-short;
+      &:hover {
+        transform: scale(1.2);
+      }
     }
   }
 }
@@ -149,7 +129,7 @@ body {
   grid-row-gap: 0;
   height: 100%;
 
-  @include sm {
+  @include breakpoints.sm {
     $grid-column-count: 2;
     grid-template-columns: repeat($grid-column-count, 1fr);
   }
@@ -160,7 +140,7 @@ body {
   transition: $transition-long;
   padding: 0;
 
-  @include sm {
+  @include breakpoints.sm {
     padding: 0rem;
   }
   .info {
@@ -173,34 +153,37 @@ body {
     border-bottom: $border-small;
     .terminate {
       cursor: pointer;
+      transition: $transition-short;
+      &:hover {
+        transform: scale(1.2);
+      }
     }
   }
   .clock {
-    @include sm {
+    @include breakpoints.sm {
       width: 40vw;
       height: 40vw;
     }
     width: 80vw;
     height: 80vw;
-    //border: $border-standard;
+    border: $border-standard;
     border-radius: 50%;
     margin: 1rem auto;
     position: relative;
-    background: $color-dark;
-    transition: $transition-short;
 
     .clock-face {
       position: relative;
       width: 100%;
       height: 100%;
-      transform: translateY(-3px);
+      transform: translateY(0px);
       .hand {
-        width: 45%;
-        left: 5%;
+        width: 50%;
+        left: 0%;
         position: absolute;
         top: 50%;
         transform-origin: 100%;
         border-radius: 5px;
+        transition: all 1s linear;
       }
       .hour-hand {
         height: 4px;
@@ -217,9 +200,6 @@ body {
       .second-hand {
         height: 2px;
         background: $color-bright;
-      }
-      .transition {
-        transition: all 1s linear;
       }
     }
   }
