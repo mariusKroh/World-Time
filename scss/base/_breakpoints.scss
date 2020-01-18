@@ -1,0 +1,25 @@
+$viewport-5: 576px;
+$viewport-7: 768px;
+$viewport-9: 992px;
+$viewport-12: 1200px;
+
+@mixin sm {
+  @media (min-width: #{$viewport-5}) {
+    @content;
+  }
+}
+@mixin md {
+  @media (min-width: #{$viewport-7}) {
+    @content;
+  }
+}
+@mixin lg {
+  @media (min-width: #{$viewport-9}) {
+    @content;
+  }
+}
+@mixin xl {
+  @media (min-width: #{$viewport-12}) {
+    @content;
+  }
+}
