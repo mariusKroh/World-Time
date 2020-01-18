@@ -1,159 +1,54 @@
+@use "base/variables";
 @use "base/breakpoints";
+@use "base/mixins";
+@use "sections/top-bar";
 @use "sections/slideout-menu";
-$font-size-standard: 20px;
-$font-size-smaller: 16px;
-$font-size-bigger: 24px;
-$font-family: "Roboto Mono", monospace;
-$color-dark: #001c00;
-$color-bright: #f8f8f8;
-$color-highlight: #ff3300;
-$border-small: 2px solid $color-bright;
-$border-standard: 4px solid $color-bright;
-$border-radius: 1px;
-$transition-short: all 0.5s;
-$transition-long: all 1s;
-$grid-column-count: 1;
-
-@mixin flex-column {
-  display: flex;
-  flex-direction: column;
-}
-@mixin flex-row {
-  display: flex;
-  flex-direction: row;
-}
 
 :root {
-  font-size: $font-size-standard;
+  font-size: variables.$font-size-standard;
 }
 
 body {
-  @include flex-column;
-  background-color: $color-dark;
-  font-family: $font-family;
+  @include mixins.flex-column;
+  background-color: variables.$color-dark;
+  font-family: variables.$font-family;
   margin: 0;
-}
-
-/* NAVBAR */
-
-#top-bar {
-  @include flex-row;
-  align-items: center;
-  justify-content: space-between;
-  margin: 0.5rem 0.6rem 1rem;
-
-  .title {
-    border-radius: $border-radius;
-    padding: 0 0.3rem;
-    background-color: $color-bright;
-    h1 {
-      line-height: 0;
-      font-family: $font-family;
-      font-size: $font-size-standard;
-      font-weight: 400;
-      letter-spacing: 0.05rem;
-    }
-  }
-
-  .search-bar {
-    @include flex-row;
-    justify-content: space-between;
-    align-items: center;
-
-    .fa {
-      color: $color-bright;
-      transition: $transition-short;
-    }
-    .search-form {
-      margin-right: 0;
-      text-align: right;
-      .search-input {
-        width: 20vw;
-        font-family: $font-family;
-        font-size: $font-size-smaller;
-        background-color: $color-dark;
-        color: $color-bright;
-        border-radius: $border-radius;
-        transition: $transition-short;
-        border: 0;
-        border-bottom: $border-small;
-        margin: 0 0.6rem;
-        &:focus {
-          position: relative;
-          outline: 0;
-        }
-      }
-      .suggestions {
-        z-index: 1000;
-        position: absolute;
-        text-align: center;
-        list-style: none;
-        font-size: $font-size-smaller;
-        color: $color-bright;
-        background-color: $color-dark;
-        padding: 0;
-        left: 0;
-        right: 0;
-        transition: $transition-short;
-        .suggestion {
-          cursor: pointer;
-          padding: 0.3rem;
-          transition: $transition-short;
-        }
-        .highlight {
-          background-color: $color-highlight;
-          letter-spacing: 0.1rem;
-        }
-      }
-    }
-    .hamburger-menu {
-      @include flex-row;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-      padding: 0.1rem;
-      transition: $transition-short;
-      &:hover {
-        transform: scale(1.2);
-      }
-    }
-  }
 }
 
 /* CLOCK STUFF */
 
 #wrapper {
   display: grid;
-  grid-template-columns: repeat($grid-column-count, 1fr);
+  grid-template-columns: repeat(variables.$grid-column-count, 1fr);
   grid-column-gap: 1rem;
   grid-row-gap: 0;
   height: 100%;
 
   @include breakpoints.sm {
     $grid-column-count: 2;
-    grid-template-columns: repeat($grid-column-count, 1fr);
+    grid-template-columns: repeat(variables.$grid-column-count, 1fr);
   }
 }
 
 .clock-container {
-  @include flex-column;
-  transition: $transition-long;
+  @include mixins.flex-column;
+  transition: variables.$transition-long;
   padding: 0;
 
   @include breakpoints.sm {
     padding: 0rem;
   }
   .info {
-    @include flex-row;
+    @include mixins.flex-row;
     justify-content: space-between;
     margin: 0.5rem 0.6rem 0.7rem;
     padding: 0.2rem;
-    font-size: $font-size-smaller;
-    color: $color-bright;
-    border-bottom: $border-small;
+    font-size: variables.$font-size-smaller;
+    color: variables.$color-bright;
+    border-bottom: variables.$border-small;
     .terminate {
       cursor: pointer;
-      transition: $transition-short;
+      transition: variables.$transition-short;
       &:hover {
         transform: scale(1.2);
       }
@@ -166,7 +61,7 @@ body {
     }
     width: 80vw;
     height: 80vw;
-    border: $border-standard;
+    border: variables.$border-standard;
     border-radius: 50%;
     margin: 1rem auto;
     position: relative;
@@ -190,16 +85,16 @@ body {
         width: 35%;
         left: 15%;
         z-index: 900;
-        background: $color-highlight;
+        background: variables.$color-highlight;
       }
       .min-hand {
         height: 4px;
-        background: $color-bright;
+        background: variables.$color-bright;
         z-index: 800;
       }
       .second-hand {
         height: 2px;
-        background: $color-bright;
+        background: variables.$color-bright;
       }
     }
   }
