@@ -11,7 +11,11 @@
 body {
   @include mixins.flex-column;
   background-color: variables.$color-dark;
-  font-family: variables.$font-family;
+  font-family: variables.$font-mono;
+  margin: 0;
+}
+
+p {
   margin: 0;
 }
 
@@ -40,12 +44,12 @@ body {
   }
   .info {
     @include mixins.flex-row;
+    @include mixins.border-bottom-bright;
     justify-content: space-between;
     margin: 0.5rem 0.6rem 0.7rem;
     padding: 0.2rem;
     font-size: variables.$font-size-smaller;
     color: variables.$color-bright;
-    border-bottom: variables.$border-small;
     .terminate {
       cursor: pointer;
       transition: variables.$transition-short;

@@ -1,3 +1,5 @@
+@use "variables";
+
 @mixin flex-column {
   display: flex;
   flex-direction: column;
@@ -7,7 +9,22 @@
   flex-direction: row;
 }
 
+@mixin flex-row-center-between {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
 @mixin flex-center {
   justify-content: center;
   align-items: center;
+}
+
+@mixin border-bottom-bright {
+  border-bottom: variables.$border-width-small solid variables.$color-bright;
+}
+
+@mixin border-bottom-dark {
+  border-bottom: variables.$border-width-small solid variables.$color-dark;
 }

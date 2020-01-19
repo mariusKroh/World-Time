@@ -1,12 +1,15 @@
 $font-size-standard: 20px;
 $font-size-smaller: 16px;
 $font-size-bigger: 24px;
-$font-family: "Roboto Mono", monospace;
+$font-mono: "Roboto Mono", monospace;
+$font-sans: "Arial", sans-serif;
 $color-dark: #001c00;
 $color-bright: #f8f8f8;
 $color-highlight: #ff3300;
-$border-small: 2px solid $color-bright;
-$border-standard: 4px solid $color-bright;
+$border-width-small: 2px;
+$border-width-standard: 4px;
+$border-small: $border-width-small solid $color-bright;
+$border-standard: $border-width-standard solid $color-bright;
 $border-radius: 2px;
 $transition-short: all 0.5s;
 $transition-long: all 1s;

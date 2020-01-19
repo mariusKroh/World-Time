@@ -4,29 +4,25 @@
 
 h1 {
   line-height: 0;
-  font-family: variables.$font-family;
+  font-family: variables.$font-mono;
   font-size: variables.$font-size-standard;
   font-weight: 400;
   letter-spacing: 0.05rem;
 }
 
 #top-bar {
-  @include mixins.flex-row;
-  align-items: center;
-  justify-content: space-between;
+  @include mixins.flex-row-center-between;
   margin: 0.5rem 0.6rem 1rem;
-
   .title {
     border-radius: variables.$border-radius;
     padding: 0 0.3rem;
-    background-color: variables.$color-bright;
     z-index: 1500;
+    transition: variables.$transition-short;
+    transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
   }
 
   .search-bar {
-    @include mixins.flex-row;
-    justify-content: space-between;
-    align-items: center;
+    @include mixins.flex-row-center-between;
 
     .fa {
       color: variables.$color-bright;
@@ -36,15 +32,16 @@ h1 {
       margin-right: 0;
       text-align: right;
       .search-input {
+        border: 0;
+        @include mixins.border-bottom-bright;
         width: 20vw;
-        font-family: variables.$font-family;
+        font-family: variables.$font-mono;
         font-size: variables.$font-size-smaller;
         background-color: variables.$color-dark;
         color: variables.$color-bright;
         border-radius: variables.$border-radius;
         transition: variables.$transition-short;
-        border: 0;
-        border-bottom: variables.$border-small;
+
         margin: 0 0.6rem;
         &:focus {
           position: relative;
@@ -79,23 +76,27 @@ h1 {
       @include mixins.flex-center;
       cursor: pointer;
       z-index: 5000;
+
       padding: 0.1rem;
       transition: variables.$transition-short;
+      transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
+
       &:hover {
         transform: scale(1.2);
-      }
-      .dots-icon {
-        color: variables.$color-bright;
       }
     }
   }
 }
 
-.invert-dots {
+.color-dark {
   color: variables.$color-dark !important;
 }
-
-.invert-title {
-  background-color: variables.$color-dark !important;
+.color-bright {
   color: variables.$color-bright;
+}
+.background-dark {
+  background-color: variables.$color-dark;
+}
+.background-bright {
+  background-color: variables.$color-bright;
 }
