@@ -1,5 +1,5 @@
 // S E T U P
-
+// avoid globals?
 const endpoint =
   "https://raw.githubusercontent.com/mariusKroh/simpleWorldTimeZones/master/timezones.json";
 const timezones = [];
@@ -7,9 +7,11 @@ const wrapper = document.querySelector("#wrapper");
 const searchForm = document.querySelector(".search-form");
 const searchInput = document.querySelector(".search-input");
 const suggestions = document.querySelector(".suggestions");
+const topBar = document.querySelector("#top-bar");
 const title = document.querySelector(".title");
 const dots = document.querySelector(".dots-icon");
 const menu = document.querySelector("#slideout-menu");
+const descriptionContainer = document.querySelector(".description-container");
 
 fetch(endpoint)
   .then(blob => blob.json())
@@ -116,9 +118,15 @@ function closeSuggestions(e) {
 
 // Toggle slideout-menu
 function toggleMenu() {
+  const topBarHeight = topBar.offsetHeight;
+  menu.style.paddingTop = topBarHeight + "px";
+
   menu.classList.toggle("active");
-  dots.classList.toggle("invert-dots");
-  title.classList.toggle("invert-title");
+  dots.classList.toggle("color-dark");
+  title.classList.toggle("background-dark");
+  title.classList.toggle("color-bright");
+  title.classList.toggle("background-bright");
+  title.classList.toggle("color-dark");
 }
 // C L O C K   S T U F F
 // Prepare clock data
@@ -322,7 +330,7 @@ setInterval(setTime, 1000);
 // styling
 // info menu
 //- handle daylight savings
-//- return strings from filter
+//- return strings from filter / check map functions
 // clean up conditionals
 // clean up variable & parameter names
 // prevent firing highlight too often
@@ -334,5 +342,4 @@ setInterval(setTime, 1000);
 // color styles
 // smooth loading of clocks
 // am/pm
-// continous rotation of secondhand
 // hide menu bar
