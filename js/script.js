@@ -11,7 +11,6 @@ const topBar = document.querySelector("#top-bar");
 const title = document.querySelector(".title");
 const dots = document.querySelector(".dots-icon");
 const menu = document.querySelector("#slideout-menu");
-const descriptionContainer = document.querySelector(".description-container");
 
 fetch(endpoint)
   .then(blob => blob.json())
