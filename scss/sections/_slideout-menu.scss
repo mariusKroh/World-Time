@@ -10,15 +10,12 @@
   z-index: 1200;
   transition: 0.7s;
   transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1);
-  #description-container {
+  #slideout-container {
     @include mixins.flex-column;
-    margin: 2rem 0.6rem 1rem;
-
-    #settings {
-    }
-
-    #about {
-      font-family: variables.$font-sans;
+    margin: 2rem 0.6rem 0;
+    #settings-form,
+    #project-description {
+      margin: 1rem 0 0.7rem;
     }
   }
 }
@@ -33,4 +30,7 @@
 .active {
   top: 0;
   visibility: visible;
+}
+
+.inactive-setting {
 }
