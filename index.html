@@ -32,23 +32,44 @@
       </div>
     </nav>
     <aside id="slideout-menu" class="hidden">
-      <div id="description-container">
+      <div id="slideout-container">
         <div id="settings">
           <p class="head">Settings</p>
-          <p 
+          <form id="settings-form">
+            <div class="flex-item">
+              <input type="checkbox" id="hide-second" name="hide-second" />
+              <label for="hide-second">Hide second hands</label>
+            </div>
+            <div class="flex-item">
+              <input type="checkbox" id="plain-style" name="playin-style" />
+              <label for="plain-style">Hide clock backgrounds</label>
+            </div>
+            <div class="flex-item">
+              <input
+                type="color"
+                id="highlight-color"
+                name="highlight-color"
+                value="#ff8830"
+              />
+              <label for="highlight-color">Pick highlight color</label>
+            </div>
+          </form>
         </div>
-    
         <div id="about">
           <p class="head">About</p>
-          <p class="about">
-            Did you ever wonder what time it is in places you are not at? Do you
-            prefer your clocks to be analog and your interfaces minimal? Then this is for you.</p>
-          <p class="credits">Created by <a href="http://mariuskroh.de">Marius Kroh</a><br />
-            View source on <a href="#">Github</a></p>
-          </p>
+          <div id="project-description">
+            <p>
+              Did you ever wonder what time it is in places you are not at? Do
+              you prefer your clocks to be analog and your interfaces minimal?
+              Then this is for you.
+            </p>
+            <p>
+              Created by <a href="http://mariuskroh.de">Marius Kroh</a><br />
+              View source on <a href="#">Github</a>
+            </p>
+          </div>
         </div>
       </div>
-    
     </aside>
 
     <main id="wrapper"></main>
