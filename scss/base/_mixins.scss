@@ -28,3 +28,11 @@
 @mixin border-bottom-dark {
   border-bottom: variables.$border-width-small solid variables.$color-dark;
 }
+
+@mixin box-style {
+  transition: variables.$transition-short;
+  height: 1rem;
+  width: 1rem;
+  margin-right: 0.6rem;
+  border: 2px solid variables.$color-dark;
+}
