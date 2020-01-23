@@ -5,7 +5,9 @@ A simple world time app using vanilla JS.
 ---
 
 ##Todo
+
 ####Features
+
 ######important
 
 - [ ] Implement daylight savings
@@ -22,6 +24,7 @@ A simple world time app using vanilla JS.
 - [ ] Hide or sticky menu bar?
 
 ####Code
+
 ######important
 
 - [ ] Clean up conditionals
