@@ -1,0 +1,18 @@
+@use "variables";
+@use "mixins";
+// not really reset, more like base styles but yeah...
+
+:root {
+  font-size: variables.$font-size-standard;
+}
+
+body {
+  @include mixins.flex-column;
+  background-color: variables.$color-dark;
+  font-family: variables.$font-mono;
+  margin: 0;
+}
+
+p {
+  margin: 0;
+}
