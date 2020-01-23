@@ -2,8 +2,6 @@
 
 A simple world time app using vanilla JS.
 
----
-
 ##Todo
 
 ####Features
