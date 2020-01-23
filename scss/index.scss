@@ -1,20 +1,7 @@
+@use "base/reset";
 @use "base/variables";
 @use "base/breakpoints";
 @use "base/mixins";
 @use "sections/top-bar";
 @use "sections/slideout-menu";
-
-:root {
-  font-size: variables.$font-size-standard;
-}
-
-body {
-  @include mixins.flex-column;
-  background-color: variables.$color-dark;
-  font-family: variables.$font-mono;
-  margin: 0;
-}
-
-p {
-  margin: 0;
-}
+@use "sections/clock";
