@@ -2,17 +2,17 @@
 
 A simple world time app using vanilla JS.
 
-##Todo
+## Todo
 
-####Features
+#### Features
 
-######important
+###### important
 
 - [ ] Implement daylight savings
 - [ ] AM/PM display
 - [ ] Settings functionality
 
-######nice to have
+###### nice to have
 
 - [ ] Smooth loading of clocks
 - [ ] Smooth repositioning when terminate clock
@@ -21,14 +21,16 @@ A simple world time app using vanilla JS.
 - [ ] Color/gradient styles representing time (radar mode)
 - [ ] Hide or sticky menu bar?
 
-####Code
+#### Code
 
-######important
+###### important
 
 - [ ] Clean up conditionals
 - [ ] Clean up variable & parameter names
 - [ ] Prevent firing highlight too often
 - [ ] Return strings from filter / check map functions
-      ######nice to have
+
+###### nice to have
+
 - [ ] Add localstorage
 - [ ] No double clocks?
