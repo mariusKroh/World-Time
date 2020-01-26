@@ -119,9 +119,12 @@ function closeSuggestions(e) {
 function toggleMenu() {
   const topBarHeight = topBar.offsetHeight;
   menu.style.paddingTop = topBarHeight + "px";
-
   menu.classList.toggle("active");
   dots.classList.toggle("color-dark");
+  toggleTitleBackground();
+}
+// Switch title background for readability
+function toggleTitleBackground() {
   title.classList.toggle("background-dark");
   title.classList.toggle("color-bright");
   title.classList.toggle("background-bright");
