@@ -281,29 +281,29 @@ function setTime() {
   // setBackground();
 }
 
-// Set background according to current time - trying to visualise day/night here
-function setBackground() {
-  const allClocks = document.querySelectorAll(".clock");
-  // Need each clock seperatly
-  allClocks.forEach((clock, index) => {
-    clock.id = `clock-${index}`;
-    const currentClock = document.querySelector(`#clock-${index}`);
-    const hourHand = currentClock.querySelector(".hour-hand");
-    const minHand = currentClock.querySelector(".min-hand");
-    const secondHand = currentClock.querySelector(".second-hand");
-    // Get rotation values for each hand by stripping the string down to only the number
-    const hourHandRotation = hourHand.style.transform.replace(/\D/g, "");
-    const minHandRotation = minHand.style.transform.replace(/\D/g, "");
-    const secondHandRotation = secondHand.style.transform.replace(/\D/g, "");
-    // Now do something with the background property
-    // But rotation is an ever increasing ms value!
-    // Needs a way to display time passed since beginning of current day!
-    console.table([hourHandRotation, minHandRotation, secondHandRotation]);
-    const colorDark = "#001c00";
-    const colorBright = "#f8f8f8";
-    currentClock.style.background = `linear-gradient(${hourHandRotation}deg, ${colorDark} 50%, ${colorBright} 100%`;
-  });
-}
+// // Set background according to current time - trying to visualise day/night here
+// function setBackground() {
+//   const allClocks = document.querySelectorAll(".clock");
+//   // Need each clock seperatly
+//   allClocks.forEach((clock, index) => {
+//     clock.id = `clock-${index}`;
+//     const currentClock = document.querySelector(`#clock-${index}`);
+//     const hourHand = currentClock.querySelector(".hour-hand");
+//     const minHand = currentClock.querySelector(".min-hand");
+//     const secondHand = currentClock.querySelector(".second-hand");
+//     // Get rotation values for each hand by stripping the string down to only the number
+//     const hourHandRotation = hourHand.style.transform.replace(/\D/g, "");
+//     const minHandRotation = minHand.style.transform.replace(/\D/g, "");
+//     const secondHandRotation = secondHand.style.transform.replace(/\D/g, "");
+//     // Now do something with the background property
+//     // But rotation is an ever increasing ms value!
+//     // Needs a way to display time passed since beginning of current day!
+//     console.table([hourHandRotation, minHandRotation, secondHandRotation]);
+//     const colorDark = "#001c00";
+//     const colorBright = "#f8f8f8";
+//     currentClock.style.background = `linear-gradient(${hourHandRotation}deg, ${colorDark} 50%, ${colorBright} 100%`;
+//   });
+// }
 
 // Remove clock from DOM - but stylish
 function terminateClock(e) {
