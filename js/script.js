@@ -1,5 +1,4 @@
 // S E T U P
-// avoid globals?
 const endpoint =
   "https://raw.githubusercontent.com/mariusKroh/simpleWorldTimeZones/master/timezones.json";
 const timezones = [];
@@ -18,6 +17,7 @@ fetch(endpoint)
   .catch(err => console.error(err));
 
 // S E A R C H   F U N C T I O N A L I T Y
+
 // Find & display search query
 function findMatches(wordToMatch, timezones) {
   if (wordToMatch === "") {
@@ -63,7 +63,6 @@ function addHighlight(e) {
 // Accessible menu with up,down and enter keys
 function navigateSuggestions(e) {
   if (e.keyCode != 38 && e.keyCode != 40 && e.keyCode != 13) return;
-  // Add IDs to each list element
   let listElements = document.querySelectorAll(".suggestion");
   listElements.forEach((element, index) => {
     element.id = index;
@@ -123,12 +122,34 @@ function toggleMenu() {
   dots.classList.toggle("color-dark");
   toggleTitleBackground();
 }
-// Switch title background for readability
+// Switch title background for readability & check for all cases
 function toggleTitleBackground() {
+  if (
+    window.innerWidth >= 768 &&
+    title.classList.contains("background-bright")
+  ) {
+    return;
+  }
   title.classList.toggle("background-dark");
   title.classList.toggle("color-bright");
   title.classList.toggle("background-bright");
   title.classList.toggle("color-dark");
+}
+function checkTitle() {
+  if (
+    window.innerWidth <= 767 &&
+    title.classList.contains("background-bright") &&
+    menu.classList.contains("active")
+  ) {
+    toggleTitleBackground();
+  } else if (
+    window.innerWidth >= 768 &&
+    title.classList.contains("background-dark")
+  ) {
+    toggleTitleBackground();
+  } else {
+    return;
+  }
 }
 // C L O C K   S T U F F
 // Prepare clock data
@@ -316,6 +337,8 @@ function terminateClock(e) {
   setTimeout(() => thisClock.parentNode.removeChild(thisClock), 1000);
 }
 dots.addEventListener("click", toggleMenu);
+window.addEventListener("resize", checkTitle);
+
 searchInput.addEventListener("change", displayMatches);
 searchInput.addEventListener("keyup", displayMatches);
 
