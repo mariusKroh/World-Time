@@ -4,10 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-
-    <link rel="stylesheet" type="text/css" href="css/style.css" />
     <script src="https://use.fontawesome.com/27de6baef1.js"></script>
 
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
     <title>World:Time</title>
   </head>
   <body>
@@ -32,29 +31,26 @@
         <div id="settings">
           <p class="head">Settings</p>
           <form id="settings-form">
-            <div class="flex-item">
-              <label for="hide-second">
-                <input type="checkbox" id="hide-second" name="hide-second" />
-                <span class="checkmark"></span>
-                Hide second hands</label
-              >
-            </div>
-            <div class="flex-item">
-              <label for="plain-style">
-                <input type="checkbox" id="plain-style" name="playin-style" />
-                <span class="checkmark"></span>
-                Hide clock backgrounds</label
-              >
-            </div>
-            <div class="flex-item">
+            <label for="hide-second">
+              <input type="checkbox" id="hide-second" name="hide-second" />
+              <span class="checkmark"></span>
+              <p>Hide second hands</p></label
+            >
+            <label for="plain-style">
+              <input type="checkbox" id="plain-style" name="plain-style" />
+              <span class="checkmark"></span>
+              <p>Hide clock backgrounds</p></label
+            >
+            <label for="highlight-color">
               <input
                 type="color"
                 id="highlight-color"
                 name="highlight-color"
-                value="#ff8830"
+                value="#ff3300"
               />
-              <label for="highlight-color">Pick highlight color</label>
-            </div>
+              <span class="pick-color"></span>
+              <p>Pick highlight color</p></label
+            >
           </form>
         </div>
         <div id="about">

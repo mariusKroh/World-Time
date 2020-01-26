@@ -324,21 +324,3 @@ window.addEventListener("click", closeSuggestions);
 window.addEventListener("click", terminateClock);
 
 setInterval(setTime, 1000);
-
-///* TO DO
-// styling
-// info menu
-//- handle daylight savings
-//- return strings from filter / check map functions
-// clean up conditionals
-// clean up variable & parameter names
-// prevent firing highlight too often
-// add localstorage
-// bonus:
-// no double clocks?
-// swicht to digital
-// toggle secondhand
-// color styles
-// smooth loading of clocks
-// am/pm
-// hide menu bar

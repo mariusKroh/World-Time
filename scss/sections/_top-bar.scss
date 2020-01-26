@@ -41,6 +41,9 @@ h1 {
         color: variables.$color-bright;
         border-radius: variables.$border-radius;
         transition: variables.$transition-short;
+        @include breakpoints.md {
+          font-size: variables.$font-size-standard;
+        }
 
         margin: 0 0.6rem;
         &:focus {
@@ -53,21 +56,28 @@ h1 {
         position: absolute;
         text-align: center;
         list-style: none;
-        font-size: variables.$font-size-smaller;
+        font-size: variables.$font-size-standard;
         color: variables.$color-bright;
         background-color: variables.$color-dark;
         padding: 0;
-        left: 0;
         right: 0;
+        left: 0;
         transition: variables.$transition-short;
+        @include breakpoints.md {
+          text-align: right;
+          left: auto;
+        }
         .suggestion {
           cursor: pointer;
           padding: 0.3rem;
+          @include breakpoints.md {
+            padding-right: 0.6rem;
+          }
           transition: variables.$transition-short;
         }
         .highlight {
           background-color: variables.$color-highlight;
-          letter-spacing: 0.1rem;
+          letter-spacing: 0.06rem;
         }
       }
     }
@@ -100,3 +110,6 @@ h1 {
 .background-bright {
   background-color: variables.$color-bright;
 }
+// .stick-top {
+//   position: fixed;
+// }
