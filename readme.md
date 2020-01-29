@@ -10,7 +10,7 @@ A simple world time app using vanilla JS.
 
 - [ ] Implement daylight savings
 - [ ] AM/PM display
-- [ ] Settings functionality
+- [x] Settings functionality
 
 ###### nice to have
 
@@ -29,6 +29,7 @@ A simple world time app using vanilla JS.
 - [ ] Clean up variable & parameter names
 - [ ] Prevent firing highlight too often
 - [ ] Return strings from filter / check map functions
+      -> general refactoring
 
 ###### nice to have
 
