@@ -11,6 +11,7 @@ const title = document.querySelector(".title");
 const dots = document.querySelector(".dots-icon");
 const menu = document.querySelector("#slideout-menu");
 const hideSecondLabel = document.querySelector("#hide-second");
+const hideBackgroundLabel = document.querySelector("#plain-style");
 
 fetch(endpoint)
   .then(blob => blob.json())
@@ -157,11 +158,22 @@ function checkTitle() {
 function hideSecondHand() {
   const allSecondHands = document.querySelectorAll(".second-hand");
   if (hideSecondLabel.checked) {
-    allSecondHands.forEach(hand => hand.classList.add("hand-hidden"));
+    allSecondHands.forEach(hand => hand.classList.add("display-none"));
   } else {
-    allSecondHands.forEach(hand => hand.classList.remove("hand-hidden"));
+    allSecondHands.forEach(hand => hand.classList.remove("display-none"));
   }
 }
+
+// Hide clock backgrounds (hides clock frame as long as there is no custom backgrund function)
+function hideClockBackground() {
+  const allClocks = document.querySelectorAll(".clock");
+  if (hideBackgroundLabel.checked) {
+    allClocks.forEach(clock => clock.classList.add("no-border"));
+  } else {
+    allClocks.forEach(clock => clock.classList.remove("no-border"));
+  }
+}
+
 // C L O C K   S T U F F
 // Prepare clock data
 function makeClock(e) {
@@ -241,7 +253,9 @@ function renderClock(city, offset, isdst) {
   clockFace.appendChild(hourHand);
   clockFace.appendChild(minHand);
   clockFace.appendChild(secondHand);
+  // check for user settings
   hideSecondHand();
+  hideClockBackground();
 
   clockName.innerHTML = `${name}`;
   terminate.innerHTML = `✕`;
@@ -351,6 +365,7 @@ function terminateClock(e) {
 dots.addEventListener("click", toggleMenu);
 window.addEventListener("resize", checkTitle);
 hideSecondLabel.addEventListener("click", hideSecondHand);
+hideBackgroundLabel.addEventListener("click", hideClockBackground);
 
 searchInput.addEventListener("change", displayMatches);
 searchInput.addEventListener("keyup", displayMatches);

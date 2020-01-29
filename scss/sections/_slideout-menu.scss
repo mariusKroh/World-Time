@@ -98,3 +98,8 @@
   top: 0;
   visibility: visible;
 }
+
+.inactive {
+  opacity: 0.5;
+  text-decoration: line-through;
+}
