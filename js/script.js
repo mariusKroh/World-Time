@@ -12,6 +12,7 @@ const dots = document.querySelector(".dots-icon");
 const menu = document.querySelector("#slideout-menu");
 const hideSecondLabel = document.querySelector("#hide-second");
 const hideBackgroundLabel = document.querySelector("#plain-style");
+const colorPicker = document.querySelector("#highlight-color");
 
 fetch(endpoint)
   .then(blob => blob.json())
@@ -58,8 +59,10 @@ function addHighlight(e) {
   const listElements = document.querySelectorAll(".suggestion");
   listElements.forEach(element => {
     element.classList.remove("highlight");
+    element.removeAttribute("style");
   });
   target.classList.add("highlight");
+  changeHighlightColor();
 }
 
 // Accessible menu with up,down and enter keys
@@ -174,6 +177,18 @@ function hideClockBackground() {
   }
 }
 
+// Custom highlight color
+function changeHighlightColor() {
+  const newColor = colorPicker.value;
+  const picker = document.querySelector(".pick-color");
+  const hourHands = document.querySelectorAll(".hour-hand");
+  hourHands.forEach(hand => (hand.style.background = newColor));
+  picker.style.backgroundColor = newColor;
+
+  const highlight = document.querySelector(".highlight");
+  highlight.style.backgroundColor = newColor;
+}
+
 // C L O C K   S T U F F
 // Prepare clock data
 function makeClock(e) {
@@ -208,7 +223,7 @@ function makeClock(e) {
 function renderClock(city, offset, isdst) {
   const name = city;
   const utcOffset = offset;
-  const daylightSavings = isdst;
+  //const daylightSavings = isdst;
   const container = document.createElement("div");
   const info = document.createElement("div");
   const clockName = document.createElement("div");
@@ -253,9 +268,10 @@ function renderClock(city, offset, isdst) {
   clockFace.appendChild(hourHand);
   clockFace.appendChild(minHand);
   clockFace.appendChild(secondHand);
-  // check for user settings
+  // check for user settings & apply
   hideSecondHand();
   hideClockBackground();
+  changeHighlightColor();
 
   clockName.innerHTML = `${name}`;
   terminate.innerHTML = `✕`;
@@ -362,10 +378,12 @@ function terminateClock(e) {
   thisClock.classList.add("fade-out");
   setTimeout(() => thisClock.parentNode.removeChild(thisClock), 1000);
 }
+
 dots.addEventListener("click", toggleMenu);
 window.addEventListener("resize", checkTitle);
 hideSecondLabel.addEventListener("click", hideSecondHand);
 hideBackgroundLabel.addEventListener("click", hideClockBackground);
+colorPicker.addEventListener("change", changeHighlightColor);
 
 searchInput.addEventListener("change", displayMatches);
 searchInput.addEventListener("keyup", displayMatches);
