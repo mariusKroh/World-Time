@@ -10,6 +10,7 @@ const topBar = document.querySelector("#top-bar");
 const title = document.querySelector(".title");
 const dots = document.querySelector(".dots-icon");
 const menu = document.querySelector("#slideout-menu");
+const hideSecondLabel = document.querySelector("#hide-second");
 
 fetch(endpoint)
   .then(blob => blob.json())
@@ -151,6 +152,16 @@ function checkTitle() {
     return;
   }
 }
+// S E T T I N G S
+// Hide all second hands
+function hideSecondHand() {
+  const allSecondHands = document.querySelectorAll(".second-hand");
+  if (hideSecondLabel.checked) {
+    allSecondHands.forEach(hand => hand.classList.add("hidden"));
+  } else {
+    allSecondHands.forEach(hand => hand.classList.remove("hidden"));
+  }
+}
 // C L O C K   S T U F F
 // Prepare clock data
 function makeClock(e) {
@@ -230,6 +241,7 @@ function renderClock(city, offset, isdst) {
   clockFace.appendChild(hourHand);
   clockFace.appendChild(minHand);
   clockFace.appendChild(secondHand);
+  hideSecondHand();
 
   clockName.innerHTML = `${name}`;
   terminate.innerHTML = `✕`;
@@ -338,6 +350,7 @@ function terminateClock(e) {
 }
 dots.addEventListener("click", toggleMenu);
 window.addEventListener("resize", checkTitle);
+hideSecondLabel.addEventListener("click", hideSecondHand);
 
 searchInput.addEventListener("change", displayMatches);
 searchInput.addEventListener("keyup", displayMatches);
