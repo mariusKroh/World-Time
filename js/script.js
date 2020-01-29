@@ -157,9 +157,9 @@ function checkTitle() {
 function hideSecondHand() {
   const allSecondHands = document.querySelectorAll(".second-hand");
   if (hideSecondLabel.checked) {
-    allSecondHands.forEach(hand => hand.classList.add("hidden"));
+    allSecondHands.forEach(hand => hand.classList.add("hand-hidden"));
   } else {
-    allSecondHands.forEach(hand => hand.classList.remove("hidden"));
+    allSecondHands.forEach(hand => hand.classList.remove("hand-hidden"));
   }
 }
 // C L O C K   S T U F F
