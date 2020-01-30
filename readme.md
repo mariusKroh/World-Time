@@ -19,8 +19,6 @@ This project grew from the idea of experimenting with a simple CSS clock in Java
 
 #### Concepts I utilized
 
-###### JS
-
 - Basic functional programming
 - ES6 Syntax
 - Event handling & delegation
