@@ -190,7 +190,7 @@ function changeHighlightColor() {
 }
 
 // C L O C K   S T U F F
-// Prepare clock data
+// Prepare clock data from suggestions drop-down
 function makeClock(e) {
   let target;
   e.type === "mouseup" ? (target = e.target) : (target = e);
@@ -219,7 +219,7 @@ function makeClock(e) {
   suggestions.innerHTML = "";
 }
 
-// Render clock to DOM
+// Render clock to DOM - this can surely be written more compact? very long!
 function renderClock(city, offset, isdst) {
   const name = city;
   const utcOffset = offset;
@@ -227,6 +227,7 @@ function renderClock(city, offset, isdst) {
   const container = document.createElement("div");
   const info = document.createElement("div");
   const clockName = document.createElement("div");
+  const amPm = document.createElement("div");
   const terminate = document.createElement("div");
   const clock = document.createElement("div");
   const clockFace = document.createElement("div");
@@ -239,6 +240,7 @@ function renderClock(city, offset, isdst) {
   clock.classList.add("clock");
   info.classList.add("info");
   clockName.classList.add("clock-name");
+  amPm.classList.add("am-pm");
   terminate.classList.add("terminate");
   clockFace.classList.add("clock-face");
   hourHand.classList.add("hand");
@@ -262,6 +264,7 @@ function renderClock(city, offset, isdst) {
   wrapper.appendChild(container);
   container.appendChild(info);
   info.appendChild(clockName);
+  info.appendChild(amPm);
   info.appendChild(terminate);
   container.appendChild(clock);
   clock.appendChild(clockFace);
@@ -277,13 +280,14 @@ function renderClock(city, offset, isdst) {
   terminate.innerHTML = `✕`;
 }
 
+// Calculate offset from UTC
 function calculateOffset(value, isdst) {
   const now = new Date();
   const currentMinutes = now.getUTCMinutes();
   const totalMinutes = value * 60;
   let fixHours = 0;
   const offsetMinutes = totalMinutes % 60;
-  // messy fix for incorrect display of time when offset also contains minutes
+  // messy fix for incorrect display of time when offset is not full hours
   if (currentMinutes + offsetMinutes >= 60) {
     fixHours = 1;
   }
@@ -292,6 +296,18 @@ function calculateOffset(value, isdst) {
     offsetMinutes: offsetMinutes,
     offsetHours: offsetHours
   };
+}
+
+// Calculate and display AM/PM indicator
+function getAmPm(utcHours, offsetHours) {
+  const indicators = document.querySelectorAll(".am-pm");
+  indicators.forEach(indicator => {
+    const sum = parseInt(utcHours) + parseInt(offsetHours);
+    indicator.innerHTML = sum;
+  });
+
+  console.log(utcHours + offsetHours);
+  console.count("called ampm");
 }
 
 // Get all hands of all clocks
@@ -315,9 +331,9 @@ function setHours(hours) {
   return hourHandRotation;
 }
 
-// Set time for each of the clocks by initializing with UTC time in ms
-// still need to include daylight savings
-function setTime() {
+// Init UTC time with ms
+// Definitely refactor in several functions here
+function getUTCTime() {
   const now = new Date();
   const utc = new Date(now.getTime() + now.getTimezoneOffset() * 60000);
   const then = new Date(
@@ -332,16 +348,30 @@ function setTime() {
   const hours = milliSeconds / (1000 * 60 * 60);
   const minutes = hours * 60;
   const seconds = minutes * 60;
+  return {
+    UTCHours: hours,
+    UTCMinutes: minutes,
+    UTCSeconds: seconds
+  };
+}
+
+//Set time for all clocks
+function setTime() {
+  const currentTime = getUTCTime();
   const allHands = getHands();
   allHands.forEach(hand => {
     if (hand.classList.contains("hour-hand")) {
       const offset = hand.getAttribute("utc-offset-hours");
-      hand.style.transform = `rotate(${setHours(hours) + offset * 30}deg)`;
+      hand.style.transform = `rotate(${setHours(currentTime.UTCHours) +
+        offset * 30}deg)`;
+      // Setting AM/PM flag for each clock
+      // getAmPm(hours, offset);
     } else if (hand.classList.contains("min-hand")) {
       const offset = hand.getAttribute("utc-offset-minutes");
-      hand.style.transform = `rotate(${setMinutes(minutes) + offset * 6}deg)`;
+      hand.style.transform = `rotate(${setMinutes(currentTime.UTCMinutes) +
+        offset * 6}deg)`;
     } else {
-      hand.style.transform = `rotate(${setSeconds(seconds)}deg)`;
+      hand.style.transform = `rotate(${setSeconds(currentTime.UTCSeconds)}deg)`;
     }
   });
   // setBackground();
