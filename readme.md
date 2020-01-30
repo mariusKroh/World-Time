@@ -1,6 +1,34 @@
-# World Clocks
+# World Time
 
-A simple world time app using vanilla JS.
+A simple world time app using only vanilla JS.
+
+## Features
+
+- Displays current time around the world as an analog clock
+- Multiple clocks possible for that cosmopolitan feel
+- Dynamic search of cities and places
+
+##### not yet implemented
+
+- Fancy backgrounds according to current time
+- Localstorage
+
+## About
+
+This project grew from the idea of experimenting with a simple CSS clock in JavaScript. My aim was to apply what I have learned over the last weeks while deepening my frontend knowledge. I made the rule to not use any libraries or frameworks for this since good vanilla JS knowledge seems fundamental for the understanding of further concepts to me.
+
+#### Concepts I utilized
+
+###### JS
+
+- Basic functional programming
+- ES6 Syntax
+- Event handling & delegation
+- Fetch API
+- DOM Manipulation with dynamic content
+- SASS/SCSS
+- RWD
+- Basic Git workflow via CLI
 
 ## Todo
 
@@ -35,3 +63,4 @@ A simple world time app using vanilla JS.
 
 - [ ] Add localstorage
 - [ ] No double clocks?
+- [ ] Limit clock count
