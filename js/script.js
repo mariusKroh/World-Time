@@ -140,6 +140,8 @@ function toggleTitleBackground() {
   title.classList.toggle("background-bright");
   title.classList.toggle("color-dark");
 }
+
+// Check if title has to change background on window resize
 function checkTitle() {
   if (
     window.innerWidth <= 767 &&
@@ -299,15 +301,16 @@ function calculateOffset(value, isdst) {
 }
 
 // Calculate and display AM/PM indicator
-function getAmPm(utcHours, offsetHours) {
-  const indicators = document.querySelectorAll(".am-pm");
-  indicators.forEach(indicator => {
-    const sum = parseInt(utcHours) + parseInt(offsetHours);
-    indicator.innerHTML = sum;
-  });
+function getAmPm(hourHand, offsetByHour) {
+  let amPm;
+  const currentHours = Math.round(getUTCTime().UTCHours);
+  const offset = parseInt(offsetByHour);
+  //PM indicated by dot
+  currentHours + offset >= 12 ? (amPm = "PM") : (amPm = "AM");
 
-  console.log(utcHours + offsetHours);
-  console.count("called ampm");
+  const currentClockContainer = hourHand.closest(".clock-container");
+  const indicator = currentClockContainer.querySelector(".am-pm");
+  indicator.innerHTML = amPm;
 }
 
 // Get all hands of all clocks
@@ -332,7 +335,6 @@ function setHours(hours) {
 }
 
 // Init UTC time with ms
-// Definitely refactor in several functions here
 function getUTCTime() {
   const now = new Date();
   const utc = new Date(now.getTime() + now.getTimezoneOffset() * 60000);
@@ -355,7 +357,7 @@ function getUTCTime() {
   };
 }
 
-//Set time for all clocks
+//Set time for all clocks, letting all come together here
 function setTime() {
   const currentTime = getUTCTime();
   const allHands = getHands();
@@ -364,8 +366,8 @@ function setTime() {
       const offset = hand.getAttribute("utc-offset-hours");
       hand.style.transform = `rotate(${setHours(currentTime.UTCHours) +
         offset * 30}deg)`;
-      // Setting AM/PM flag for each clock
-      // getAmPm(hours, offset);
+      //Set AmPm flag
+      getAmPm(hand, offset);
     } else if (hand.classList.contains("min-hand")) {
       const offset = hand.getAttribute("utc-offset-minutes");
       hand.style.transform = `rotate(${setMinutes(currentTime.UTCMinutes) +
