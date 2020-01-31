@@ -15,7 +15,7 @@ A simple world time app using only vanilla JS.
 
 ## About
 
-This project grew from the idea of experimenting with a simple CSS clock in JavaScript. My aim was to apply what I have learned over the last weeks while deepening my frontend knowledge. I made the rule to not use any libraries or frameworks for this since good vanilla JS knowledge seems fundamental for the understanding of further concepts to me.
+This project grew from the idea of experimenting with a simple CSS clock in JavaScript. My aim was to apply what I have learned over the last weeks while deepening my frontend knowledge. I made the rule to not use any libraries or frameworks for this since good vanilla JS knowledge seems fundamental for the understanding of further concepts to me. I should probably read about design patterns.
 
 #### Concepts I utilized
 
@@ -35,7 +35,7 @@ This project grew from the idea of experimenting with a simple CSS clock in Java
 ###### important
 
 - [ ] Implement daylight savings
-- [ ] AM/PM display
+- [x] AM/PM display
 - [x] Settings functionality
 
 ###### nice to have
