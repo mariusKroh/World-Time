@@ -21,7 +21,6 @@
   .info {
     @include mixins.flex-row;
     @include mixins.border-bottom-bright;
-    justify-content: space-between;
     margin: 0.5rem 0.6rem 0.7rem;
     padding: 0.2rem;
     font-size: variables.$font-size-smaller;
@@ -29,7 +28,11 @@
     @include breakpoints.md {
       font-size: variables.$font-size-standard;
     }
+    .am-pm {
+      margin: 0 0.6rem;
+    }
     .terminate {
+      margin-left: auto;
       cursor: pointer;
       transition: variables.$transition-short;
       &:hover {
