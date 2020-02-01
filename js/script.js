@@ -243,6 +243,7 @@ function renderClock(city, offset, isdst) {
   info.classList.add("info");
   clockName.classList.add("clock-name");
   amPm.classList.add("am-pm");
+
   terminate.classList.add("terminate");
   clockFace.classList.add("clock-face");
   hourHand.classList.add("hand");
@@ -303,17 +304,18 @@ function calculateOffset(value, isdst) {
 // Calculate and display AM/PM indicator
 function getAmPm(hourHand, offsetByHour) {
   let amPm;
-  const currentHours = Math.round(getUTCTime().UTCHours);
+  const UTCHours = Math.round(getUTCTime().UTCHours);
   const offset = parseInt(offsetByHour);
-  //PM indicated by dot
-  currentHours + offset >= 12 ? (amPm = "PM") : (amPm = "AM");
+  const clockHours =
+    UTCHours + offset < 0 ? 24 + (UTCHours + offset) : UTCHours + offset;
 
+  clockHours >= 12 && clockHours < 24 ? (amPm = "PM") : (amPm = "AM");
   const currentClockContainer = hourHand.closest(".clock-container");
   const indicator = currentClockContainer.querySelector(".am-pm");
   indicator.innerHTML = amPm;
 }
 
-// Get all hands of all clocks
+// Get all hands of all clocksow
 function getHands() {
   const hands = document.querySelectorAll(".hand");
   return hands;
