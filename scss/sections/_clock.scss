@@ -15,7 +15,6 @@
 
 .clock-container {
   @include mixins.flex-column;
-  transition: variables.$transition-long;
   padding: 0;
 
   .info {
@@ -64,7 +63,6 @@
         top: 50%;
         transform-origin: 100%;
         border-radius: 5px;
-        transition: all 1s linear;
       }
       .hour-hand {
         height: 3px;
@@ -84,6 +82,9 @@
       }
     }
   }
+}
+.transition {
+  transition: all 1s linear;
 }
 .fade-out {
   opacity: 0;
