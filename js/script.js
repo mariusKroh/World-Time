@@ -219,6 +219,7 @@ function makeClock(e) {
   searchInput.value = "";
   searchInput.blur();
   suggestions.innerHTML = "";
+  setTimeout(addHandTransition, 1000);
 }
 
 // Render clock to DOM - this can surely be written more compact? very long!
@@ -248,7 +249,7 @@ function renderClock(city, offset, isdst) {
   clockFace.classList.add("clock-face");
   hourHand.classList.add("hand");
   hourHand.classList.add("hour-hand");
-  hourHand.classList.add("transition");
+  // hourHand.classList.add("transition");
   hourHand.setAttribute(
     "utc-offset-hours",
     calculateOffset(utcOffset).offsetHours
@@ -256,14 +257,14 @@ function renderClock(city, offset, isdst) {
   //hourHand.setAttribute("daylight-savings");
   minHand.classList.add("hand");
   minHand.classList.add("min-hand");
-  minHand.classList.add("transition");
+  //minHand.classList.add("transition");
   minHand.setAttribute(
     "utc-offset-minutes",
     calculateOffset(utcOffset).offsetMinutes
   );
   secondHand.classList.add("hand");
   secondHand.classList.add("second-hand");
-  secondHand.classList.add("transition");
+  //secondHand.classList.add("transition");
   wrapper.appendChild(container);
   container.appendChild(info);
   info.appendChild(clockName);
@@ -281,6 +282,17 @@ function renderClock(city, offset, isdst) {
 
   clockName.innerHTML = `${name}`;
   terminate.innerHTML = `✕`;
+}
+// Check for transition class & add afterwards, to prevent weird loading glitch
+function addHandTransition() {
+  const allHands = getHands();
+  allHands.forEach(hand => {
+    if (hand.classList.contains("transition")) {
+      return;
+    } else {
+      hand.classList.add("transition");
+    }
+  });
 }
 
 // Calculate offset from UTC
@@ -378,6 +390,7 @@ function setTime() {
       hand.style.transform = `rotate(${setSeconds(currentTime.UTCSeconds)}deg)`;
     }
   });
+
   // setBackground();
 }
 
