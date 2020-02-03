@@ -20,7 +20,7 @@ This project grew from the idea of experimenting with a simple CSS clock in Java
 #### Concepts I utilized
 
 - Basic functional programming
-- ES6 Syntax
+- ES6 Syntax, array methods
 - Event handling & delegation
 - Fetch API
 - DOM Manipulation with dynamic content
@@ -45,13 +45,14 @@ This project grew from the idea of experimenting with a simple CSS clock in Java
 - [ ] Make Highlight follow suggestion width
 - [ ] Frame mode (clocks fill frame + skip like gallery)
 - [ ] Color/gradient styles representing time (radar mode)
-- [ ] Hide or sticky menu bar?
+- [ ] Hide or sticky menu bar / fullscreen or "zen" mode
 
 #### Code
 
 ###### important
 
 - [ ] Clean up conditionals
+- [ ] Console error when searching with empty string
 - [ ] Clean up variable & parameter names
 - [ ] Prevent firing highlight too often
 - [ ] Return strings from filter / check map functions
