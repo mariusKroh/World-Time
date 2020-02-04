@@ -3,7 +3,6 @@ const endpoint =
   "https://raw.githubusercontent.com/mariusKroh/simpleWorldTimeZones/master/timezones.json";
 const timezones = [];
 const wrapper = document.querySelector("#wrapper");
-const searchForm = document.querySelector(".search-form");
 const searchInput = document.querySelector(".search-input");
 const suggestions = document.querySelector(".suggestions");
 const topBar = document.querySelector("#top-bar");
@@ -50,11 +49,9 @@ function displayMatches(e) {
 // Get mouseevent or keypress on suggestions + toggle highlight class
 function addHighlight(e) {
   if (suggestions.innerHTML === "") return;
-  console.count("fire add highlight");
-  let target;
-  console.log(e.type);
+  console.count("Add highlight");
+  let target = e.type === "mousemove" ? e.target : e;
 
-  e.type === "mousemove" ? (target = e.target) : (target = e);
   // prevent highlighting of more than one result by first deactivating all
   const listElements = document.querySelectorAll(".suggestion");
   listElements.forEach(element => {
@@ -194,8 +191,7 @@ function changeHighlightColor() {
 // C L O C K   S T U F F
 // Prepare clock data from suggestions drop-down
 function makeClock(e) {
-  let target;
-  e.type === "mouseup" ? (target = e.target) : (target = e);
+  let target = e.type === "mouseup" ? e.target : e;
 
   const content = target.textContent.split(",");
   const regex = new RegExp(content[0], "gi");
@@ -278,7 +274,7 @@ function renderClock(city, offset, isdst) {
   // check for user settings & apply
   hideSecondHand();
   hideClockBackground();
-  changeHighlightColor();
+  // changeHighlightColor();
 
   clockName.innerHTML = `${name}`;
   terminate.innerHTML = `✕`;
@@ -315,13 +311,11 @@ function calculateOffset(value, isdst) {
 
 // Calculate and display AM/PM indicator
 function getAmPm(hourHand, offsetByHour) {
-  let amPm;
   const UTCHours = Math.round(getUTCTime().UTCHours);
   const offset = parseInt(offsetByHour);
   const clockHours =
     UTCHours + offset < 0 ? 24 + (UTCHours + offset) : UTCHours + offset;
-
-  clockHours >= 12 && clockHours < 24 ? (amPm = "PM") : (amPm = "AM");
+  const amPm = clockHours >= 12 && clockHours < 24 ? "PM" : "AM";
   const currentClockContainer = hourHand.closest(".clock-container");
   const indicator = currentClockContainer.querySelector(".am-pm");
   indicator.innerHTML = amPm;
