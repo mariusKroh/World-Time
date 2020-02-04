@@ -1,6 +1,6 @@
 # World Time
 
-A simple world time app built in vanilla JS.
+A simple world time app built with vanilla JS.
 
 ## Features
 
@@ -35,7 +35,7 @@ If you happen to stumble upon this and want to submit a pull request/report issu
 
 I ran into a lot of smaller issues & gnarly feeling workarounds due to the limitations I set for myself when creating this project. However, it wasn't until I tried implementing the DST feature when I realised that it's just not worth the hassle continuing with these limitations. The ideal solution for me is to rewrite most of the code:
 
-1. Use [another](https://github.com/dmfilipenko/timezones.json)[timezone.JSON](http://worldtimeapi.org/api/timezone) for displaying the data.
+1. Use [another](https://github.com/dmfilipenko/timezones.json) [timezone.JSON](http://worldtimeapi.org/api/timezone) for displaying the data.
 2. Rewrite search & display suggestions functionality.
 3. Rewrite set & make clock functionality while implementing DST, AM/PM & others.
 4. [Use Moment.js](https://momentjs.com/) as working with time objects can be super hard to wrap your head around and very confusing.
