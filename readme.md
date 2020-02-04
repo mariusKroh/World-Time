@@ -66,6 +66,7 @@ I ran into a lot of smaller issues & gnarly feeling workarounds due to the limit
 
 ###### Important
 
+- [ ] Fix error when setting backgroundColor on makeClock with mouseevent (Line 277).
 - [ ] Utilize new timezones.JSON -> Rewrite search/suggestion functionality
 - [ ] Prevent firing highlight too often
 
