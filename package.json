@@ -1,0 +1,32 @@
+{
+  "name": "world-time",
+  "version": "1.1.0",
+  "description": "A simple world time app.",
+  "main": "index.html",
+  "scripts": {
+    "files:build": "echo 'COMPILING SCSS FILES' && npm run compile:scss -s",
+    "compile:scss": "sass ./dev/scss/index.scss ./public/css/style.css",
+    "postcompile:scss": "echo 'DONE, NOW MINIFYING STYLE.CSS' && npm run minify:css",
+    "minify:css": "uglifycss ./public/css/style.css > ./public/css/style.min.css",
+    "postminify:css": "echo SUCCESS",
+    "reload:index": "reload --verbose",
+    "watch:dir": "watch 'npm run files:build' ./dev",
+    "version:patch": "npm version patch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mariuskroh/world-time.git"
+  },
+  "author": "Marius Kroh",
+  "license": "",
+  "bugs": {
+    "url": "https://github.com/mariuskroh/world-time/issues"
+  },
+  "homepage": "https://github.com/mariuskroh/world-time#readme",
+  "devDependencies": {
+    "reload": "^3.0.4",
+    "sass": "^1.25.0",
+    "uglifycss": "0.0.29",
+    "watch": "^1.0.2"
+  }
+}
